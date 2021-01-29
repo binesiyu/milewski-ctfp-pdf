@@ -12,14 +12,19 @@
   \usepackage[many]{tcolorbox}
   \usetikzlibrary{calc,positioning, shadings}
   \usepackage[T1]{fontenc}
-  \usepackage{Alegreya} %% Option 'black' gives heavier bold face 
-  
-  \setmainfont{Alegreya Sans}[
-    UprightFeatures={SmallCapsFont=* SC},
-    ItalicFeatures={SmallCapsFont=* SC Italic},
-    BoldFeatures={SmallCapsFont=* SC Bold},
-    BoldItalicFeatures={SmallCapsFont=* SC Bold Italic},
-  ]
+  \usepackage{fontspec}
+
+  \setmainfont[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    UprightFeatures={SmallCapsFont=*SC-Regular},
+    ItalicFeatures={SmallCapsFont=*SC-Italic},
+    BoldFeatures={SmallCapsFont=*SC-Bold},
+    BoldItalicFeatures={SmallCapsFont=*SC-BoldItalic},
+    ]{AlegreyaSans}
 
   \newcommand{\olpath}{../}
   \newcommand{\whitebg}[1]{%
@@ -52,7 +57,7 @@
     \bookcovercomponent{color}{bg whole}{color=BackgroundColor}
     \bookcovercomponent{color}{spine}{color=SpineBackColor}
     \bookcovercomponent{normal}{front}{
-    \input{ribbon}
+    \input{ribbon-scala}
     \vspace{1.1cm}
     \begin{center}
       \fontsize{40pt}{5em}\selectfont\bfseries
