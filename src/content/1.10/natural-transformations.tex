@@ -1,32 +1,17 @@
 % !TEX root = ../../ctfp-print.tex
 
-\lettrine[lhang=0.17]{W}{e talked about} functors as mappings between categories that preserve
-their structure.
+\lettrine[lhang=0.17]{我}{们已讨论过}函子(functor)作为保持其结构的范畴(category)间映射。
 
-A functor ``embeds'' one category in another. It may
-collapse multiple things into one, but it never breaks connections. One
-way of thinking about it is that with a functor we are modeling one
-category inside another. The source category serves as a model, a
-blueprint, for some structure that's part of the target category.
+一个函子会将一个范畴"嵌入"另一个范畴中。它可能将多个事物合并为一，但从不会破坏连接关系。一种理解方式是：通过函子我们正在一个范畴内部对另一个范畴进行建模。源范畴充当了一个模型，作为目标范畴中某个结构的蓝图(blueprint)。
 
 \begin{figure}[H]
   \centering\includegraphics[width=0.4\textwidth]{images/1_functors.jpg}
 \end{figure}
 
 \noindent
-There may be many ways of embedding one category in another. Sometimes
-they are equivalent, sometimes very different. One may collapse the
-whole source category into one object, another may map every object to a
-different object and every morphism to a different morphism. The same
-blueprint may be realized in many different ways. Natural
-transformations help us compare these realizations. They are mappings of
-functors --- special mappings that preserve their functorial nature.
+将一个范畴嵌入另一个范畴可能存在多种方式。有时它们是等价的，有时差异很大。一种方式可能将整个源范畴坍缩为单个对象，另一种方式可能将每个对象映射到不同对象，每个态射映射到不同态射。同一个蓝图可能以许多不同方式实现。自然变换(natural transformation)帮助我们比较这些实现方式。它们是函子之间的映射——保持函子性质的特殊映射。
 
-Consider two functors $F$ and $G$ between categories
-$\cat{C}$ and $\cat{D}$. If you focus on just one object $a$ in
-$\cat{C}$, it is mapped to two objects: $F a$ and $G a$.
-A mapping of functors should therefore map $F a$ to
-$G a$.
+考虑范畴$\cat{C}$和$\cat{D}$之间的两个函子$F$和$G$。若只关注$\cat{C}$中的单个对象$a$，它会被映射到两个对象：$F a$和$G a$。因此函子映射应当将$F a$映射到$G a$。
 
 \begin{figure}[H]
   \centering
@@ -34,41 +19,20 @@ $G a$.
 \end{figure}
 
 \noindent
-Notice that $F a$ and $G a$ are objects in the same
-category $\cat{D}$. Mappings between objects in the same category should
-not go against the grain of the category. We don't want to make
-artificial connections between objects. So it's \emph{natural} to use
-existing connections, namely morphisms. A natural transformation is a
-selection of morphisms: for every object $a$, it picks one
-morphism from $F a$ to $G a$. If we call the natural
-transformation $\alpha$, this morphism is called the \newterm{component}
-of $\alpha$ at $a$, or $\alpha_a$.
+注意$F a$和$G a$都属于同一范畴$\cat{D}$中的对象。同一范畴内对象间的映射不应违背该范畴的结构特性。我们不想人为制造对象间的连接。因此使用现有连接（即态射(morphism)）是\emph{自然}的选择。自然变换就是一系列态射的选择：对每个对象$a$，选取从$F a$到$G a$的一个态射。若我们将自然变换记作$\alpha$，这个态射称为$\alpha$在$a$处的\newterm{分量}(component)，记作$\alpha_a$。
 
-\[\alpha_a \Colon F a \to G a\]
-Keep in mind that $a$ is an object in $\cat{C}$ while $\alpha_a$
-is a morphism in $\cat{D}$.
+$$\alpha_a \Colon F a \to G a$$
+请注意，这里的$a$是范畴$\cat{C}$中的对象，而$\alpha_a$是范畴$\cat{D}$中的态射。
 
-If, for some $a$, there is no morphism between $F a$ and
-$G a$ in $\cat{D}$, there can be no natural transformation
-between $F$ and $G$.
+如果对某些$a$，在$\cat{D}$中不存在从$F a$到$G a$的态射，则$F$和$G$之间不可能存在自然变换。
 
-Of course that's only half of the story, because functors not only map
-objects, they map morphisms as well. So what does a natural
-transformation do with those mappings? It turns out that the mapping of
-morphisms is fixed --- under any natural transformation between $F$ and $G$,
-$F f$ must be transformed into $G f$. What's more, the
-mapping of morphisms by the two functors drastically restricts the
-choices we have in defining a natural transformation that's compatible
-with it. Consider a morphism $f$ between two objects $a$
-and $b$ in $\cat{C}$. It's mapped to two morphisms, $F f$
-and $G f$ in $\cat{D}$:
+当然这只是故事的一半，因为函子不仅映射对象，还映射态射。那么自然变换如何处理这些映射？事实上态射的映射是固定的——在任意$F$和$G$之间的自然变换下，$F f$必须被转换为$G f$。更重要的是，两个函子对态射的映射极大地限制了定义兼容自然变换时的选择空间。考虑$\cat{C}$中两个对象$a$和$b$间的态射$f$，它会被映射到$\cat{D}$中的两个态射$F f$和$G f$：
 
 \begin{gather*}
   F f \Colon F a \to F b \\
   G f \Colon G a \to G b
 \end{gather*}
-The natural transformation $\alpha$ provides two additional morphisms
-that complete the diagram in \emph{D}:
+自然变换$\alpha$提供的两个额外态射完成了\emph{D}中的图示：
 
 \begin{gather*}
   \alpha_a \Colon F a \to G a \\
@@ -81,17 +45,12 @@ that complete the diagram in \emph{D}:
 \end{figure}
 
 \noindent
-Now we have two ways of getting from $F a$ to $G b$. To
-make sure that they are equal, we must impose the \newterm{naturality
-  condition} that holds for any $f$:
+现在我们有了两条从$F a$到$G b$的路径。为保证两者相等，必须对任意$f$施加\newterm{自然性条件}(naturality condition)：
 
-\[G f \circ \alpha_a = \alpha_b \circ F f\]
-The naturality condition is a pretty stringent requirement. For
-instance, if the morphism $F f$ is invertible, naturality
-determines $\alpha_b$ in terms of $\alpha_a$. It \emph{transports}
-$\alpha_a$ along $f$:
+$$G f \circ \alpha_a = \alpha_b \circ F f$$
+自然性条件是一个相当严格的约束。例如，若态射$F f$可逆，自然性就通过$\alpha_a$确定了$\alpha_b$。它会沿着$f$对$\alpha_a$进行\emph{传递}(transport)：
 
-\[\alpha_b = (G f) \circ \alpha_a \circ (F f)^{-1}\]
+$$\alpha_b = (G f) \circ \alpha_a \circ (F f)^{-1}$$
 
 \begin{figure}[H]
   \centering
@@ -99,19 +58,9 @@ $\alpha_a$ along $f$:
 \end{figure}
 
 \noindent
-If there is more than one invertible morphism between two objects, all
-these transports have to agree. In general, though, morphisms are not
-invertible; but you can see that the existence of natural
-transformations between two functors is far from guaranteed. So the
-scarcity or the abundance of functors that are related by natural
-transformations may tell you a lot about the structure of categories
-between which they operate. We'll see some examples of that when we talk
-about limits and the Yoneda lemma.
+若两个对象间存在多个可逆态射，则所有这些传递必须一致。不过一般情况下态射不可逆；但你可以看到两个函子间存在自然变换远非必然。因此由自然变换关联的函子数量稀少或丰富程度，可以揭示它们作用范畴的结构特征。当我们讨论极限(limit)和Yoneda引理(Yoneda lemma)时会看到具体例子。
 
-Looking at a natural transformation component-wise, one may say that it
-maps objects to morphisms. Because of the naturality condition, one may
-also say that it maps morphisms to commuting squares --- there is one
-commuting naturality square in $\cat{D}$ for every morphism in $\cat{C}$.
+从自然变换的分量角度看，可以说它将对象映射为态射。由于自然性条件的存在，也可以说它将态射映射为交换方图(commuting square)——每个$\cat{C}$中的态射对应$\cat{D}$中的一个交换自然方图。
 
 \begin{figure}[H]
   \centering
@@ -119,290 +68,167 @@ commuting naturality square in $\cat{D}$ for every morphism in $\cat{C}$.
 \end{figure}
 
 \noindent
-This property of natural transformations comes in very handy in a lot of
-categorical constructions, which often include commuting diagrams. With
-a judicious choice of functors, a lot of these commutativity conditions
-may be transformed into naturality conditions. We'll see examples of
-that when we get to limits, colimits, and adjunctions.
+自然变换这一特性在大量范畴论构造中非常实用，这些构造通常包含交换图。通过精心选择函子，许多交换条件都可以转化为自然性条件。我们在讨论极限、余极限(colimit)和伴随(adjunction)时会看到这类例子。
 
-Finally, natural transformations may be used to define isomorphisms of
-functors. Saying that two functors are naturally isomorphic is almost
-like saying they are the same. \newterm{Natural isomorphism} is defined as
-a natural transformation whose components are all isomorphisms
-(invertible morphisms).
+最后，自然变换可用于定义函子的同构(isomorphism)。说两个函子自然同构几乎等同于说它们是相同的。\newterm{自然同构}(natural isomorphism)定义为所有分量都是同构（即可逆态射）的自然变换。
 
-\section{Polymorphic Functions}
+\section{多态函数}
 
-We talked about the role of functors (or, more specifically,
-endofunctors) in programming. They correspond to type constructors that
-map types to types. They also map functions to functions, and this
-mapping is implemented by a higher order function \code{fmap} (or
-\code{transform}, \code{then}, and the like in C++).
+我们讨论过函子（更确切地说是自函子(endofunctor)）在编程中的作用。它们对应将类型映射到类型的类型构造器。它们还将函数映射到函数，这种映射通过高阶函数\code{fmap}（或C++中的\code{transform}、\code{then}等）实现。
 
-To construct a natural transformation we start with an object, here a
-type, \code{a}. One functor, \code{F}, maps it to the type
-$F a$. Another functor, \code{G}, maps it to $G a$.
-The component of a natural transformation \code{alpha} at \code{a}
-is a function from $F a$ to $G a$. In pseudo-Haskell:
+构造自然变换时，我们从一个对象开始，在这里是类型\code{a}。一个函子\code{F}将其映射到类型$F a$。另一个函子\code{G}将其映射到$G a$。自然变换\code{alpha}在\code{a}处的分量是从$F a$到$G a$的函数。用伪Haskell表示：
 
 \begin{snipv}
 alpha\textsubscript{a} :: F a -> G a
 \end{snipv}
-A natural transformation is a polymorphic function that is defined for
-all types \code{a}:
+自然变换是一个对所有类型\code{a}定义的多态函数：
 
 \src{snippet01}
-The \code{forall a} is optional in Haskell (and in fact requires
-turning on the language extension \code{ExplicitForAll}). Normally,
-you would write it like this:
+在Haskell中\code{forall a}是可选的（实际上需要启用语言扩展\code{ExplicitForAll}）。通常你会这样写：
 
 \src{snippet02}
-Keep in mind that it's really a family of functions parameterized by
-\code{a}. This is another example of the terseness of the Haskell
-syntax. A similar construct in C++ would be slightly more verbose:
+请注意这实际上是参数化于\code{a}的一族函数。这是Haskell语法简洁性的又一体现。C++中类似的构造会稍显冗长：
 
 \begin{snip}{cpp}
 template<class A> G<A> alpha(F<A>);
 \end{snip}
-There is a more profound difference between Haskell's polymorphic
-functions and C++ generic functions, and it's reflected in the way these
-functions are implemented and type-checked. In Haskell, a polymorphic
-function must be defined uniformly for all types. One formula must work
-across all types. This is called \newterm{parametric polymorphism}.
+Haskell的多态函数与C++泛型函数还有一个更深刻的区别，体现在这些函数的实现和类型检查方式上。在Haskell中，多态函数必须对所有类型统一定义。一个公式必须适用于所有类型。这称为\newterm{参数多态}(parametric polymorphism)。
 
-C++, on the other hand, supports by default \newterm{ad hoc polymorphism},
-which means that a template doesn't have to be well-defined for all
-types. Whether a template will work for a given type is decided at
-instantiation time, where a concrete type is substituted for the type
-parameter. Type checking is deferred, which unfortunately often leads to
-incomprehensible error messages.
+而C++默认支持\newterm{特设多态}(ad hoc polymorphism)，这意味着模板不必对所有类型都良好定义。模板是否适用于某个类型在实例化时决定——此时具体类型替代类型参数。类型检查被延迟，这往往导致难以理解的错误信息。
 
-In C++, there is also a mechanism for function overloading and template
-specialization, which allows different definitions of the same function
-for different types. In Haskell this functionality is provided by type
-classes and type families.
+在C++中还有函数重载和模板特化机制，允许对不同类型定义同一函数的不同版本。Haskell通过类型类(type class)和类型族(type family)提供类似功能。
 
-Haskell's parametric polymorphism has an unexpected consequence: any
-polymorphic function of the type:
+Haskell的参数多态有一个意外后果：任何形如：
 
 \src{snippet03}
-where \code{F} and \code{G} are functors, automatically satisfies
-the naturality condition. Here it is in categorical notation ($f$
-is a function $f \Colon a \to b$):
+的多态函数（其中\code{F}和\code{G}是函子）自动满足自然性条件。用范畴论记号表示如下（$f$是函数$f \Colon a \to b$）：
 
-\[G f \circ \alpha_a = \alpha_b \circ F f\]
-In Haskell, the action of a functor \code{G} on a morphism \code{f}
-is implemented using \code{fmap}. I'll first write it in
-pseudo-Haskell, with explicit type annotations:
+$$G f \circ \alpha_a = \alpha_b \circ F f$$
+在Haskell中，函子\code{G}对态射\code{f}的作用通过\code{fmap}实现。先用伪Haskell写出带显式类型注解的形式：
 
 \begin{snipv}
 fmap\textsubscript{G} f . alpha\textsubscript{a} = alpha\textsubscript{b} . fmap\textsubscript{F} f
 \end{snipv}
-Because of type inference, these annotations are not necessary, and the
-following equation holds:
+由于类型推导，这些注解并非必需，以下等式成立：
 
 \begin{snip}{text}
 fmap f . alpha = alpha . fmap f
 \end{snip}
-This is still not real Haskell --- function equality is not expressible
-in code --- but it's an identity that can be used by the programmer in
-equational reasoning; or by the compiler, to implement optimizations.
+这还不是真正的Haskell代码——函数相等性无法在代码中表达——但它是一个可供程序员进行等式推理或编译器进行优化的恒等式。
 
-The reason why the naturality condition is automatic in Haskell has to
-do with ``theorems for free.'' Parametric polymorphism, which is used to
-define natural transformations in Haskell, imposes very strong
-limitations on the implementation --- one formula for all types. These
-limitations translate into equational theorems about such functions. In
-the case of functions that transform functors, free theorems are the
-naturality conditions.\footnote{
-  You may read more about free theorems in my
-  blog \href{https://bartoszmilewski.com/2014/09/22/parametricity-money-for-nothing-and-theorems-for-free/}{``Parametricity:
-    Money for Nothing and Theorems for Free}.''}
+Haskell中自然性条件自动满足的原因与"免费定理"(free theorem)有关。用于在Haskell中定义自然变换的参数多态对实现有很强限制——一个公式适用于所有类型。这些限制转化为关于此类函数的等式定理。对于变换函子的函数，免费定理正是自然性条件。\footnote{
+  你可以在我的博客中了解更多关于免费定理的信息：
+  \href{https://bartoszmilewski.com/2014/09/22/parametricity-money-for-nothing-and-theorems-for-free/}{《Parametricity: Money for Nothing and Theorems for Free》}。}
 
-One way of thinking about functors in Haskell that I mentioned earlier
-is to consider them generalized containers. We can continue this analogy
-and consider natural transformations to be recipes for repackaging the
-contents of one container into another container. We are not touching
-the items themselves: we don't modify them, and we don't create new
-ones. We are just copying (some of) them, sometimes multiple times, into
-a new container.
+前面提到过将Haskell中的函子视为广义容器的理解方式。我们可以延续这个类比，认为自然变换是将一个容器的内容重新打包到另一个容器的配方。我们不触碰元素本身：不修改它们，也不创造新元素。只是复制（某些）元素，有时多次复制，装入新容器。
 
-The naturality condition becomes the statement that it doesn't matter
-whether we modify the items first, through the application of
-\code{fmap}, and repackage later; or repackage first, and then modify
-the items in the new container, with its own implementation of
-\code{fmap}. These two actions, repackaging and \code{fmap}ping, are
-orthogonal. ``One moves the eggs, the other boils them.''
+自然性条件此时意味着：先通过\code{fmap}修改元素再重新打包，与先重新打包再通过新容器自己的\code{fmap}实现修改元素，二者等价。这两个操作——重新打包和\code{fmap}映射——是正交的。"一个移动鸡蛋，另一个煮熟它们。"
 
-Let's see a few examples of natural transformations in Haskell. The
-first is between the list functor, and the \code{Maybe} functor. It
-returns the head of the list, but only if the list is non-empty:
+来看几个Haskell中的自然变换例子。第一个是列表函子与\code{Maybe}函子之间的变换。它返回列表的头部元素，但仅当列表非空时：
 
 \src{snippet04}
-It's a function polymorphic in \code{a}. It works for any type
-\code{a}, with no limitations, so it is an example of parametric
-polymorphism. Therefore it is a natural transformation between the two
-functors. But just to convince ourselves, let's verify the naturality
-condition.
+这是一个参数多态于\code{a}的函数。它适用于任何类型\code{a}且无限制，是参数多态的典型例子。因此它是两个函子间的自然变换。但为了验证，我们来检查自然性条件。
 
 \src{snippet05}
-We have two cases to consider; an empty list:
+需要考虑两种情况；空列表：
 
 \src{snippet06}
 
 \src{snippet07}
-and a non-empty list:
+和非空列表：
 
 \src{snippet08}
 
 \src{snippet09}
-I used the implementation of \code{fmap} for lists:
+这里使用了列表的\code{fmap}实现：
 
 \src{snippet10}
-and for \code{Maybe}:
+和\code{Maybe}的实现：
 
 \src{snippet11}
-An interesting case is when one of the functors is the trivial
-\code{Const} functor. A natural transformation from or to a
-\code{Const} functor looks just like a function that's either
-polymorphic in its return type or in its argument type.
+一个有趣的情况是其中一个函子是平凡的\code{Const}函子。从或到\code{Const}函子的自然变换看起来就像在返回类型或参数类型上多态的函数。
 
-For instance, \code{length} can be thought of as a natural
-transformation from the list functor to the \code{Const Int} functor:
+例如，\code{length}可以视为从列表函子到\code{Const Int}函子的自然变换：
 
 \src{snippet12}
-Here, \code{unConst} is used to peel off the \code{Const}
-constructor:
+这里\code{unConst}用于剥离\code{Const}构造器：
 
 \src{snippet13}
-Of course, in practice \code{length} is defined as:
+当然实践中\code{length}定义为：
 
 \src{snippet14}
-which effectively hides the fact that it's a natural transformation.
+这有效地隐藏了它作为自然变换的本质。
 
-Finding a parametrically polymorphic function \emph{from} a
-\code{Const} functor is a little harder, since it would require the
-creation of a value from nothing. The best we can do is:
+寻找从\code{Const}函子出发的参数多态函数稍难，因为它需要凭空创建值。我们最多能做到的是：
 
 \src{snippet15}
-Another common functor that we've seen already, and which will play an
-important role in the Yoneda lemma, is the \code{Reader} functor. I
-will rewrite its definition as a \code{newtype}:
+另一个我们已见过的重要函子是\code{Reader}函子，它将在Yoneda引理中扮演关键角色。将其定义重写为\code{newtype}形式：
 
 \src{snippet16}
-It is parameterized by two types, but is (covariantly) functorial only
-in the second one:
+它有两个类型参数，但仅对第二个参数协变函子：
 
 \src{snippet17}
-For every type \code{e}, you can define a family of natural
-transformations from \code{Reader e} to any other functor \code{f}.
-We'll see later that the members of this family are always in one to one
-correspondence with the elements of \code{f e} (the
-\hyperref[the-yoneda-lemma]{Yoneda lemma}).
+对每个类型\code{e}，可以定义一族从\code{Reader e}到任意其他函子\code{f}的自然变换。
+后面我们会看到这些变换总是与\code{f e}的元素一一对应（参见\hyperref[the-yoneda-lemma]{Yoneda引理}）。
 
-For instance, consider the somewhat trivial unit type \code{()} with
-one element \code{()}. The functor \code{Reader ()} takes any type
-\code{a} and maps it into a function type \code{() -> a}.
-These are just all the functions that pick a single element from the set
-\code{a}. There are as many of these as there are elements in
-\code{a}. Now let's consider natural transformations from this functor
-to the \code{Maybe} functor:
+例如，考虑只有一个元素\code{()}的平凡单位类型\code{()}。\code{Reader ()}函子将任何类型\code{a}映射为函数类型\code{() -> a}。这些函数恰好对应从集合\code{a}中选取单个元素的所有可能选择。这样的函数数量与\code{a}中的元素数量相同。现在考虑从该函子到\code{Maybe}函子的自然变换：
 
 \src{snippet18}
-There are only two of these, \code{dumb} and \code{obvious}:
+仅有两种这样的变换，\code{dumb}和\code{obvious}：
 
 \src{snippet19}
-and
+和
 
 \src{snippet20}
-(The only thing you can do with \code{g} is to apply it to the unit
-value \code{()}.)
+（你能对\code{g}做的唯一事情是将其应用于单位值\code{()}。）
 
-And, indeed, as predicted by the Yoneda lemma, these correspond to the
-two elements of the \code{Maybe ()} type, which are \code{Nothing}
-and \code{Just ()}. We'll come back to the Yoneda lemma later ---
-this was just a little teaser.
+确实，正如Yoneda引理预言的，它们对应着\code{Maybe ()}类型的两个元素\code{Nothing}和\code{Just ()}。我们之后会回到Yoneda引理——这只是个开胃小菜。
 
-\section{Beyond Naturality}
+\section{超越自然性}
 
-A parametrically polymorphic function between two functors (including
-the edge case of the \code{Const} functor) is always a natural
-transformation. Since all standard algebraic data types are functors,
-any polymorphic function between such types is a natural transformation.
+两个函子之间的参数化多态函数（包括\code{Const}函子这个边缘情况）总是自然变换。由于所有标准代数数据类型都是函子，这类类型之间的任意多态函数都是自然变换。
 
-We also have function types at our disposal, and those are functorial in
-their return type. We can use them to build functors (like the
-\code{Reader} functor) and define natural transformations that are
-higher-order functions.
+我们还可以使用函数类型，它们在其返回类型上具有函子性。我们可以用它们构建函子（如\code{Reader}函子），并定义高阶函数形式的自然变换。
 
-However, function types are not covariant in the argument type. They are
-\newterm{contravariant}. Of course contravariant functors are equivalent to
-covariant functors from the opposite category. Polymorphic functions
-between two contravariant functors are still natural transformations in
-the categorical sense, except that they work on functors from the
-opposite category to Haskell types.
+然而，函数类型在其参数类型上并非协变的。它们是\newterm{逆变}的。当然，逆变函子与从对偶范畴来的协变函子是等价的。两个逆变函子之间的多态函数在范畴论意义上仍然是自然变换，只不过它们作用于从对偶范畴到Haskell类型的函子。
 
-You might remember the example of a contravariant functor we've looked
-at before:
+你可能还记得之前讨论过的逆变函子的例子：
 
 \src{snippet21}
-This functor is contravariant in \code{a}:
+这个函子在\code{a}上是逆变的：
 
 \src{snippet22}
-We can write a polymorphic function from, say, \code{Op Bool} to
-\code{Op String}:
+我们可以编写一个从\code{Op Bool}到\code{Op String}的多态函数：
 
 \src{snippet23}
-But since the two functors are not covariant, this is not a natural
-transformation in $\Hask$. However, because they are both
-contravariant, they satisfy the ``opposite'' naturality condition:
+但由于这两个函子不是协变的，这在$\Hask$范畴中并不是自然变换。然而，由于它们都是逆变的，它们满足"对偶"的自然性条件：
 
 \src{snippet24}[b]
-Notice that the function \code{f} must go in the opposite direction
-than what you'd use with \code{fmap}, because of the signature of
-\code{contramap}:
+请注意这里的函数\code{f}必须与\code{fmap}使用的方向相反，这是由\code{contramap}的签名决定的：
 
 \src{snippet25}
-Are there any type constructors that are not functors, whether covariant
-or contravariant? Here's one example:
+是否存在既不是协变也不是逆变的函子类型构造器？这里有一个例子：
 
 \src{snippet26}
-This is not a functor because the same type \code{a} is used both in
-the negative (contravariant) and positive (covariant) position. You
-can't implement \code{fmap} or \code{contramap} for this type.
-Therefore a function of the signature:
+这不是函子，因为相同类型\code{a}同时出现在负变（逆变）和正变（协变）位置。你无法为此类型实现\code{fmap}或\code{contramap}。因此具有如下签名的函数：
 
 \src{snippet27}
-where \code{f} is an arbitrary functor, cannot be a natural
-transformation. Interestingly, there is a generalization of natural
-transformations, called dinatural transformations, that deals with such
-cases. We'll get to them when we discuss ends.
+其中\code{f}是任意函子，不能构成自然变换。有趣的是，自然变换存在一种称为二自然变换(dinatural transformation)的广义形式，专门处理此类情形。当我们讨论端(ends)的概念时会重新探讨这个问题。
 
-\section{Functor Category}
+\section{函子范畴}
 
-Now that we have mappings between functors --- natural transformations
---- it's only natural to ask the question whether functors form a
-category. And indeed they do! There is one category of functors for each
-pair of categories, $\cat{C}$ and $\cat{D}$. Objects in this category are functors from
-$\cat{C}$ to $\cat{D}$, and morphisms are natural transformations between those
-functors.
+既然我们已经有了函子之间的映射——自然变换——很自然地会问：函子是否构成一个范畴？答案是肯定的！对于任意两个范畴$\cat{C}$和$\cat{D}$，都存在对应的函子范畴。该范畴中的对象是从$\cat{C}$到$\cat{D}$的所有函子，态射则是这些函子之间的自然变换。
 
-We have to define composition of two natural transformations, but that's
-quite easy. The components of natural transformations are morphisms, and
-we know how to compose morphisms.
+我们需要定义两个自然变换的复合，这其实相当简单。自然变换的分量本身就是态射，而我们已经知道如何复合态射。
 
-Indeed, let's take a natural transformation $\alpha$ from functor $F$ to $G$. Its
-component at object $a$ is some morphism:
-\[\alpha_a \Colon F a \to G a\]
-We'd like to compose $\alpha$ with $\beta$, which is a natural transformation from
-functor $G$ to $H$. The component of $\beta$ at $a$ is a morphism:
-\[\beta_a \Colon G a \to H a\]
-These morphisms are composable and their composition is another
-morphism:
-\[\beta_a \circ \alpha_a \Colon F a \to H a\]
-We will use this morphism as the component of the natural transformation
-$\beta \cdot \alpha$ --- the composition of two natural transformations $\beta$ after $\alpha$:
-\[(\beta \cdot \alpha)_a = \beta_a \circ \alpha_a\]
+具体来说，取从函子$F$到$G$的自然变换$\alpha$，其在对象$a$处的分量是一个态射：
+$$\alpha_a \Colon F a \to G a$$
+现在我们要将$\alpha$与另一个从$G$到$H$的自然变换$\beta$复合。$\beta$在$a$处的分量是态射：
+$$\beta_a \Colon G a \to H a$$
+这两个态射可以复合，得到新的态射：
+$$\beta_a \circ \alpha_a \Colon F a \to H a$$
+我们将这个态射作为自然变换$\beta \cdot \alpha$在$a$处的分量，即$\beta$与$\alpha$按顺序复合的结果：
+$$(\beta \cdot \alpha)_a = \beta_a \circ \alpha_a$$
 
 \begin{figure}[H]
   \centering
@@ -410,9 +236,8 @@ $\beta \cdot \alpha$ --- the composition of two natural transformations $\beta$ 
 \end{figure}
 
 \noindent
-One (long) look at a diagram convinces us that the result of this
-composition is indeed a natural transformation from F to H:
-\[H f \circ (\beta \cdot \alpha)_a = (\beta \cdot \alpha)_b \circ F f\]
+观察示意图可知，这种复合的结果确实是$F$到$H$的自然变换：
+$$H f \circ (\beta \cdot \alpha)_a = (\beta \cdot \alpha)_b \circ F f$$
 
 \begin{figure}[H]
   \centering
@@ -420,22 +245,13 @@ composition is indeed a natural transformation from F to H:
 \end{figure}
 
 \noindent
-Composition of natural transformations is associative, because their
-components, which are regular morphisms, are associative with respect to
-their composition.
+自然变换的复合满足结合律，因为它们的分量（即普通态射）在其复合下具有结合性。
 
-Finally, for each functor $F$ there is an identity natural transformation
-$1_F$ whose components are the identity morphisms:
-\[\id_{F a} \Colon F a \to F a\]
-So, indeed, functors form a category.
+最后，对每个函子$F$，存在恒等自然变换$1_F$，其分量由恒等态射组成：
+$$\id_{F a} \Colon F a \to F a$$
+因此确实证明了函子构成一个范畴。
 
-A word about notation. Following Saunders Mac Lane I use the dot for the
-kind of natural transformation composition I have just described. The
-problem is that there are two ways of composing natural transformations.
-This one is called the vertical composition, because the functors are
-usually stacked up vertically in the diagrams that describe it. Vertical
-composition is important in defining the functor category. I'll explain
-horizontal composition shortly.
+关于记号的说明：按照桑德斯·麦克兰恩的习惯，我使用点号表示上述自然变换的复合方式。问题在于自然变换有两种复合方式，这种称为垂直复合(vertical composition)，因为在相关示意图中函子通常纵向排列。垂直复合在定义函子范畴时至关重要。稍后我会解释水平复合(horizontal composition)。
 
 \begin{figure}[H]
   \centering
@@ -443,19 +259,9 @@ horizontal composition shortly.
 \end{figure}
 
 \noindent
-The functor category between categories $\cat{C}$ and $\cat{D}$ is written as
-$\cat{Fun(C, D)}$, or $\cat{{[}C, D{]}}$, or sometimes as
-$\cat{D^C}$. This last notation suggests that a functor category itself
-might be considered a function object (an exponential) in some other
-category. Is this indeed the case?
+范畴$\cat{C}$与$\cat{D}$之间的函子范畴写作$\cat{Fun(C, D)}$、$\cat{{[}C, D{]}}$，有时也写作$\cat{D^C}$。最后这种记号暗示函子范畴本身可能是某个范畴中的函数对象（指数对象）。这是否成立呢？
 
-Let's have a look at the hierarchy of abstractions that we've been
-building so far. We started with a category, which is a collection of
-objects and morphisms. Categories themselves (or, strictly speaking
-\emph{small} categories, whose objects form sets) are themselves objects
-in a higher-level category $\Cat$. Morphisms in that category are
-functors. A Hom-set in $\Cat$ is a set of functors. For instance
-$\cat{Cat(C, D)}$ is a set of functors between two categories $\cat{C}$ and $\cat{D}$.
+让我们回顾目前已构建的抽象层级。范畴论始于范畴本身，即由对象和态射组成的结构。范畴（严格来说是\emph{小范畴}，其对象构成集合）自身又是更高层范畴$\Cat$中的对象。该范畴的态射是函子。$\Cat$中的Hom集就是函子的集合，例如$\cat{Cat(C, D)}$表示范畴$\cat{C}$与$\cat{D}$之间所有函子的集合。
 
 \begin{figure}[H]
   \centering
@@ -463,56 +269,26 @@ $\cat{Cat(C, D)}$ is a set of functors between two categories $\cat{C}$ and $\ca
 \end{figure}
 
 \noindent
-A functor category $\cat{{[}C, D{]}}$ is also a set of functors between two
-categories (plus natural transformations as morphisms). Its objects are
-the same as the members of $\cat{Cat(C, D)}$. Moreover, a functor category,
-being a category, must itself be an object of $\Cat$ (it so
-happens that the functor category between two small categories is itself
-small). We have a relationship between a Hom-set in a category and an
-object in the same category. The situation is exactly like the
-exponential object that we've seen in the last section. Let's see how we
-can construct the latter in $\Cat$.
+函子范畴$\cat{{[}C, D{]}}$同样是函子的集合（加上自然变换作为态射）。其对象与$\cat{Cat(C, D)}$的元素相同。更重要的是，作为范畴的函子范畴本身必然是$\Cat$的对象（恰好当$\cat{C}$和$\cat{D}$是小范畴时，其函子范畴也是小范畴）。我们在范畴的Hom集与其对象之间建立了对应关系，这正是上节讨论的指数对象的情形。现在来看如何在$\Cat$中构造这样的指数对象。
 
-As you may remember, in order to construct an exponential, we need to
-first define a product. In $\Cat$, this turns out to be relatively
-easy, because small categories are \emph{sets} of objects, and we know
-how to define Cartesian products of sets. So an object in a product
-category $\cat{C\times D}$ is just a pair of objects, $(c, d)$, one from $\cat{C}$
-and one from $\cat{D}$. Similarly, a morphism between two such pairs,
-$(c, d)$ and $(c', d')$, is a pair of morphisms, $(f, g)$, where
-$f \Colon c \to c'$ and $g \Colon d \to d'$. These pairs of morphisms
-compose component-wise, and there is always an identity pair that is
-just a pair of identity morphisms. To make the long story short,
-$\Cat$ is a full-blown Cartesian closed category in which there is
-an exponential object $\cat{D^C}$ for any pair of categories.
-And by ``object'' in $\Cat$ I mean a category, so
-$\cat{D^C}$ is a category, which we can identify with the
-functor category between $\cat{C}$ and $\cat{D}$.
+如前所述，要构造指数对象首先要定义乘积。在$\Cat$中这相对容易，因为小范畴本质上是对象的集合，而我们知道如何定义集合的笛卡尔积。因此乘积范畴$\cat{C\times D}$中的对象是形如$(c, d)$的有序对，其中$c$来自$\cat{C}$，$d$来自$\cat{D}$。类似地，这对象间的态射$(c, d)\to(c', d')$是态射对$(f, g)$，其中$f \Colon c \to c'$且$g \Colon d \to d'$。这些态射对按分量复合，且存在单位元即恒等态射对。简而言之，$\Cat$是一个完备的笛卡尔闭范畴，其中任意两个范畴都存在指数对象$\cat{D^C}$。这里的$\Cat$中的"对象"指范畴本身，因此$\cat{D^C}$就是一个范畴，我们可以将其等同于$\cat{C}$与$\cat{D}$之间的函子范畴。
 
-\section{2-Categories}
+\section{2-范畴}
 
-With that out of the way, let's have a closer look at $\Cat$. By
-definition, any Hom-set in $\Cat$ is a set of functors. But, as we
-have seen, functors between two objects have a richer structure than
-just a set. They form a category, with natural transformations acting as
-morphisms. Since functors are considered morphisms in $\Cat$,
-natural transformations are morphisms between morphisms.
+解决了前面的问题之后，让我们更仔细地观察$\Cat$。根据定义，$\Cat$中的任意Hom集都是函子的集合。但是，正如我们所见，两个对象之间的函子具有比普通集合更丰富的结构。它们形成了一个范畴，其中自然变换作为态射。由于函子在$\Cat$中被视为态射，自然变换就是态射之间的态射。
 
-This richer structure is an example of a $\cat{2}$-category, a generalization of
-a category where, besides objects and morphisms (which might be called
-$1$-morphisms in this context), there are also $2$-morphisms, which are
-morphisms between morphisms.
+这种更丰富的结构是$\cat{2}$-范畴的一个例子，这是范畴概念的一种推广：除了对象和态射（在此上下文中可能被称为1-态射）之外，还存在2-态射，即态射之间的态射。
 
-In the case of $\Cat$ seen as a $\cat{2}$-category we have:
+当我们将$\Cat$视为$\cat{2}$-范畴时，具体表现为：
 
 \begin{itemize}
   \tightlist
   \item
-        Objects: (Small) categories
+        对象：(小)范畴
   \item
-        1-morphisms: Functors between categories
+        1-态射：范畴间的函子
   \item
-        2-morphisms: Natural transformations between functors.
+        2-态射：函子间的自然变换
 \end{itemize}
 
 \begin{figure}[H]
@@ -521,26 +297,18 @@ In the case of $\Cat$ seen as a $\cat{2}$-category we have:
 \end{figure}
 
 \noindent
-Instead of a Hom-set between two categories $\cat{C}$ and $\cat{D}$, we have a
-Hom-category --- the functor category $\cat{D^C}$. We have
-regular functor composition: a functor $F$ from $\cat{D^C}$
-composes with a functor $G$ from $\cat{E^D}$ to give $G \circ F$ from
-$\cat{E^C}$. But we also have composition inside each
-Hom-category --- vertical composition of natural transformations, or
-2-morphisms, between functors.
+对于范畴$\cat{C}$和$\cat{D}$之间的态射集，我们现在有了态射范畴——即函子范畴$\cat{D^C}$。我们有常规的函子复合：从$\cat{D^C}$取函子$F$与从$\cat{E^D}$取函子$G$复合得到$\cat{E^C}$中的$G \circ F$。但我们还在每个态射范畴内部有复合——即函子间自然变换（或2-态射）的垂直复合。
 
-With two kinds of composition in a $\cat{2}$-category, the question arises: How
-do they interact with each other?
+在$\cat{2}$-范畴中存在两种复合方式的情况下，自然产生一个问题：这两种复合如何相互作用？
 
-Let's pick two functors, or 1-morphisms, in $\Cat$:
+让我们选取$\Cat$中的两个函子（即1-态射）：
 \begin{gather*}
   F \Colon \cat{C} \to \cat{D} \\
   G \Colon \cat{D} \to \cat{E}
 \end{gather*}
-and their composition:
-\[G \circ F \Colon \cat{C} \to \cat{E}\]
-Suppose we have two natural transformations, $\alpha$ and $\beta$, that act,
-respectively, on functors $F$ and $G$:
+及其复合：
+$$G \circ F \Colon \cat{C} \to \cat{E}$$
+假设我们有两个分别作用于函子$F$和$G$的自然变换$\alpha$和$\beta$：
 \begin{gather*}
   \alpha \Colon F \to F' \\
   \beta \Colon G \to G'
@@ -552,15 +320,9 @@ respectively, on functors $F$ and $G$:
 \end{figure}
 
 \noindent
-Notice that we cannot apply vertical composition to this pair, because
-the target of $\alpha$ is different from the source of $\beta$. In fact they are
-members of two different functor categories: $\cat{D^C}$ and $\cat{E^D}$.
-We can, however, apply composition to the functors
-$F'$ and $G'$, because the target of $F'$ is the source of $G'$ --- it's the
-category $\cat{D}$. What's the relation between the functors $G' \circ F'$ and $G \circ F$?
+注意到我们无法对这对变换应用垂直复合，因为$\alpha$的靶对象与$\beta$的源对象不同。实际上它们属于两个不同的函子范畴：$\cat{D^C}$和$\cat{E^D}$。然而我们可以对函子$F'$和$G'$进行复合，因为$F'$的靶对象正是$G'$的源对象——即范畴$\cat{D}$。那么函子$G' \circ F'$与$G \circ F$之间有什么关系？
 
-Having $\alpha$ and $\beta$ at our disposal, can we define a natural transformation
-from $G \circ F$ to $G' \circ F'$? Let me sketch the construction.
+既然我们已经拥有$\alpha$和$\beta$，能否定义从$G \circ F$到$G' \circ F'$的自然变换？让我来勾勒构造过程。
 
 \begin{figure}[H]
   \centering
@@ -568,56 +330,34 @@ from $G \circ F$ to $G' \circ F'$? Let me sketch the construction.
 \end{figure}
 
 \noindent
-As usual, we start with an object $a$ in $\cat{C}$. Its image splits into
-two objects in $\cat{D}$: $F a$ and $F'a$. There is also a
-morphism, a component of $\alpha$, connecting these two objects:
-\[\alpha_a \Colon F a \to F'a\]
-When going from $\cat{D}$ to $\cat{E}$, these two objects split further into four
-objects: $G (F a)$, $G'(F a)$, $G (F'a)$, $G'(F'a)$.
-We also have four morphisms forming a square. Two of these morphisms are
-the components of the natural transformation $\beta$:
+按照惯例，我们从$\cat{C}$中的对象$a$开始。它的像分裂成$\cat{D}$中的两个对象：$F a$和$F'a$。还有一个连接这两个对象的态射（即$\alpha$的分量）：
+$$\alpha_a \Colon F a \to F'a$$
+当从$\cat{D}$到$\cat{E}$时，这两个对象进一步分裂为四个对象：$G (F a)$、$G'(F a)$、$G (F'a)$、$G'(F'a)$。我们还有构成正方形的四个态射。其中两个态射是自然变换$\beta$的分量：
 \begin{gather*}
   \beta_{F a} \Colon G (F a) \to G'(F a) \\
   \beta_{F'a} \Colon G (F'a) \to G'(F'a)
 \end{gather*}
-The other two are the images of $\alpha_a$ under the two
-functors (functors map morphisms):
+另外两个则是$\alpha_a$在两个函子下的像（函子映射态射）：
 \begin{gather*}
   G \alpha_a \Colon G (F a) \to G (F'a) \\
   G'\alpha_a \Colon G'(F a) \to G'(F'a)
 \end{gather*}
-That's a lot of morphisms. Our goal is to find a morphism that goes from
-$G (F a)$ to $G'(F'a)$, a candidate for the
-component of a natural transformation connecting the two functors $G \circ F$
-and $G' \circ F'$. In fact there's not one but two paths we can take from
-$G (F a)$ to $G'(F'a)$:
+这里有相当多的态射。我们的目标是寻找从$G (F a)$到$G'(F'a)$的态射，作为连接两个函子$G \circ F$和$G' \circ F'$的自然变换分量候选。事实上从$G (F a)$到$G'(F'a)$存在两条路径：
 \begin{gather*}
   G'\alpha_a \circ \beta_{F a} \\
   \beta_{F'a} \circ G \alpha_a
 \end{gather*}
-Luckily for us, they are equal, because the square we have formed turns
-out to be the naturality square for $\beta$.
+幸运的是，这两条路径相等，因为我们构造的正方形恰好是$\beta$的自然性方块。
 
-We have just defined a component of a natural transformation from $G \circ F$
-to $G' \circ F'$. The proof of naturality for this transformation is pretty
-straightforward, provided you have enough patience.
+我们刚刚定义了从$G \circ F$到$G' \circ F'$的自然变换的一个分量。该变换的自然性证明相当直接，只要你有足够的耐心。
 
-We call this natural transformation the \newterm{horizontal composition} of
-$\alpha$ and $\beta$:
-\[\beta \circ \alpha \Colon G \circ F \to G' \circ F'\]
-Again, following Mac Lane I use the small circle for horizontal
-composition, although you may also encounter star in its place.
+我们将这个自然变换称为$\alpha$和$\beta$的\newterm{水平组合}：
+$$\beta \circ \alpha \Colon G \circ F \to G' \circ F'$$
+再次说明，遵循麦克兰（Mac Lane）的记号，我用小圆圈表示水平组合，尽管你也可能看到星号被用于相同目的。
 
-Here's a categorical rule of thumb: Every time you have composition, you
-should look for a category. We have vertical composition of natural
-transformations, and it's part of the functor category. But what about
-the horizontal composition? What category does that live in?
+这里有个范畴论的经验法则：每当你遇到复合操作时，都应该寻找其所属的范畴。我们已有自然变换的垂直组合，它构成了函子范畴的一部分。但水平组合呢？它存在于哪个范畴中？
 
-The way to figure this out is to look at $\Cat$ sideways. Look at
-natural transformations not as arrows between functors but as arrows
-between categories. A natural transformation sits between two
-categories, the ones that are connected by the functors it transforms.
-We can think of it as connecting these two categories.
+解决这个问题的方法是横向观察$\Cat$。不要将自然变换视为函子间的箭头，而是将其视为范畴间的箭头。自然变换处于两个范畴之间，而这两个范畴通过它变换的函子相连。我们可以认为它连接着这两个范畴。
 
 \begin{figure}[H]
   \centering
@@ -625,98 +365,54 @@ We can think of it as connecting these two categories.
 \end{figure}
 
 \noindent
-Let's focus on two objects of $\Cat$ --- categories $\cat{C}$ and $\cat{D}$. There
-is a set of natural transformations that go between functors that
-connect $\cat{C}$ to $\cat{D}$. These natural transformations are our new arrows from $\cat{C}$
-to $\cat{D}$. By the same token, there are natural transformations going between
-functors that connect $\cat{D}$ to $\cat{E}$, which we can treat as new arrows going
-from $\cat{D}$ to $\cat{E}$. Horizontal composition is the composition of these arrows.
+让我们聚焦$\Cat$的两个对象——范畴$\cat{C}$和$\cat{D}$。存在一组自然变换，在连接$\cat{C}$到$\cat{D}$的函子之间。这些自然变换就是我们新的从$\cat{C}$到$\cat{D}$的箭头。同理，存在在连接$\cat{D}$到$\cat{E}$的函子之间的自然变换，我们可以将其视为从$\cat{D}$到$\cat{E}$的新箭头。水平组合就是这些箭头的复合。
 
-We also have an identity arrow going from $\cat{C}$ to $\cat{C}$. It's the identity
-natural transformation that maps the identity functor on $\cat{C}$ to itself.
-Notice that the identity for horizontal composition is also the identity
-for vertical composition, but not vice versa.
+我们还有从$\cat{C}$到$\cat{C}$的恒等箭头。它是将$\cat{C}$上的恒等函子映射到自身的恒等自然变换。注意水平组合的恒等元同时也是垂直组合的恒等元，但反过来则不成立。
 
-Finally, the two compositions satisfy the interchange law:
-\[(\beta' \cdot \alpha') \circ (\beta \cdot \alpha) = (\beta' \circ \beta) \cdot (\alpha' \circ \alpha)\]
-I will quote Saunders Mac Lane here: The reader may enjoy writing down
-the evident diagrams needed to prove this fact.
+最后，这两种组合满足交换律：
+$$(\beta' \cdot \alpha') \circ (\beta \cdot \alpha) = (\beta' \circ \beta) \cdot (\alpha' \circ \alpha)$$
+在此引用桑德斯·麦克兰（Saunders Mac Lane）的话：读者或许会乐于画出证明此结论所需的明显图示。
 
-There is one more piece of notation that might come in handy in the
-future. In this new sideways interpretation of $\Cat$ there are
-two ways of getting from object to object: using a functor or using a
-natural transformation. We can, however, re-interpret the functor arrow
-as a special kind of natural transformation: the identity natural
-transformation acting on this functor. So you'll often see this
-notation:
-\[F \circ \alpha\]
-where $F$ is a functor from $\cat{D}$ to $\cat{E}$, and $\alpha$ is a natural transformation
-between two functors going from $\cat{C}$ to $\cat{D}$. Since you can't compose a
-functor with a natural transformation, this is interpreted as a
-horizontal composition of the identity natural transformation
-$1_F$ after $\alpha$.
+未来可能会用到的另一个记法值得一提。在这种横向解释的$\Cat$中，有两种方式可以在对象间移动：使用函子或使用自然变换。然而，我们可以重新将函子箭头解释为某种特殊的自然变换：作用于该函子上的恒等自然变换。因此你经常会看到如下记法：
+$$F \circ \alpha$$
+其中$F$是从$\cat{D}$到$\cat{E}$的函子，$\alpha$是两个从$\cat{C}$到$\cat{D}$的函子间的自然变换。由于你无法将函子与自然变换直接复合，这应被解读为$\alpha$后接恒等自然变换$1_F$的水平组合。
 
-Similarly:
-\[\alpha \circ F\]
-is a horizontal composition of $\alpha$ after $1_F$.
+同理：
+$$\alpha \circ F$$
+表示$1_F$后接$\alpha$的水平组合。
 
-\section{Conclusion}
+\section{结论}
 
-This concludes the first part of the book. We've learned the basic
-vocabulary of category theory. You may think of objects and categories
-as nouns; and morphisms, functors, and natural transformations as verbs.
-Morphisms connect objects, functors connect categories, natural
-transformations connect functors.
+本书的第一部分到此结束。我们已经学习了范畴论的基本术语。你可以将对象和范畴视为名词；而将态射、函子和自然变换视为动词。态射连接对象，函子连接范畴，自然变换连接函子。
 
-But we've also seen that, what appears as an action at one level of
-abstraction, becomes an object at the next level. A set of morphisms
-turns into a function object. As an object, it can be a source or a
-target of another morphism. That's the idea behind higher order
-functions.
+但我们还注意到，在某个抽象层级上的操作行为，在更高一层级会表现为对象。一组态射可转化为函数对象。作为对象后，它又能成为其他态射的源或目标。这就是高阶函数的核心思想。
 
-A functor maps objects to objects, so we can use it as a type
-constructor, or a parametric type. A functor also maps morphisms, so it
-is a higher order function --- \code{fmap}. There are some simple
-functors, like \code{Const}, product, and coproduct, that can be used
-to generate a large variety of algebraic data types. Function types are
-also functorial, both covariant and contravariant, and can be used to
-extend algebraic data types.
+函子将对象映射到对象上，因此我们可以将其用作类型构造器或参数化类型。函子同时也映射态射，因此它是高阶函数——\code{fmap}。存在一些简单的函子，如 \code{Const}、乘积和余乘积，它们可用于生成多种代数数据类型。函数类型也具有函子性，既协变又逆变，可用于扩展代数数据类型。
 
-Functors may be looked upon as objects in the functor category. As such,
-they become sources and targets of morphisms: natural transformations. A
-natural transformation is a special type of polymorphic function.
+函子可被视为函子范畴中的对象。作为对象后，它们又成为态射（自然变换）的源和目标。自然变换是一种特殊的多态函数。
 
-\section{Challenges}
+\section{挑战}
 
 \begin{enumerate}
   \tightlist
   \item
-        Define a natural transformation from the \code{Maybe} functor to the
-        list functor. Prove the naturality condition for it.
+        定义从\code{Maybe}函子到列表函子的一个自然变换。证明其满足自然条件。
   \item
-        Define at least two different natural transformations between
-        \code{Reader ()} and the list functor. How many different lists of
-        \code{()} are there?
+        在\code{Reader ()}与列表函子之间定义至少两个不同的自然变换。有多少种不同的\code{()}列表？
   \item
-        Continue the previous exercise with \code{Reader Bool} and
-        \code{Maybe}.
+        用\code{Reader Bool}和\code{Maybe}继续前一个练习。
   \item
-        Show that horizontal composition of natural transformation satisfies
-        the naturality condition (hint: use components). It's a good exercise
-        in diagram chasing.
+        证明自然变换的水平合成满足自然条件（提示：使用分量）。这是练习图示追踪的好机会。
   \item
-        Write a short essay about how you may enjoy writing down the evident
-        diagrams needed to prove the interchange law.
+        写一篇短文阐述你如何享受绘制证明交换律所需的直观图表过程。
   \item
-        Create a few test cases for the opposite naturality condition of
-        transformations between different \code{Op} functors. Here's one
-        choice:
+        为不同\code{Op}函子之间变换的对偶自然条件创建几个测试用例。以下是一个示例：
 
         \begin{snip}{haskell}
 op :: Op Bool Int
 op = Op (\x -> x > 0)
 \end{snip}
-        and
+        以及
 
         \begin{snip}{haskell}
 f :: String -> Int

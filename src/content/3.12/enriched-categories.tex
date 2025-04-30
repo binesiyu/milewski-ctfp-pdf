@@ -1,93 +1,41 @@
 % !TEX root = ../../ctfp-print.tex
 
-\lettrine[lhang=0.17]{A}{ category is small} if its objects form a set. But we know that
-there are things larger than sets. Famously, a set of all sets cannot be
-formed within the standard set theory (the Zermelo-Fraenkel theory,
-optionally augmented with the Axiom of Choice). So a category of all
-sets must be large. There are mathematical tricks like Grothendieck
-universes that can be used to define collections that go beyond sets.
-These tricks let us talk about large categories.
+\lettrine[lhang=0.17]{一}{个范畴是小}的，如果它的对象构成一个集合。但我们知道存在比集合更大的事物。著名的是，在标准集合论（策梅洛-弗兰克尔理论，可选地附加选择公理）中无法构造出包含所有集合的集合。因此所有集合的范畴必然是大的。数学上有一些技巧如格罗滕迪克宇宙（Grothendieck universes），可以用来定义超越普通集合的集合论系统。这些技巧使我们能够讨论大范畴。
 
-A category is \emph{locally small} if morphisms between any two objects
-form a set. If they don't form a set, we have to rethink a few
-definitions. In particular, what does it mean to compose morphisms if we
-can't even pick them from a set? The solution is to bootstrap ourselves
-by replacing hom-sets, which are objects in $\Set$, with
-\emph{objects} from some other category $\cat{V}$. The difference is
-that, in general, objects don't have elements, so we are no longer
-allowed to talk about individual morphisms. We have to define all
-properties of an \emph{enriched} category in terms of operations that
-can be performed on hom-objects as a whole. In order to do that, the
-category that provides hom-objects must have additional structure --- it
-must be a monoidal category. If we call this monoidal category $\cat{V}$,
-we can talk about a category $\cat{C}$ enriched over $\cat{V}$.
+一个范畴称为\emph{局部小范畴}，如果任意两个对象间的态射构成一个集合。当它们不构成集合时，我们需要重新思考若干定义。特别地，当我们无法从集合中选取态射时，组合态射意味着什么？解决方案是通过替换操作进行自举：将作为$\Set$中对象的Hom集替换为某个其他范畴$\cat{V}$中的\emph{对象}。区别在于一般情况下对象没有元素，因此我们不能再谈论个别态射。必须用能够对同态对象整体执行的操作来重新定义\emph{丰富化}范畴的所有性质。为此提供同态对象的范畴必须具有额外结构——它必须是一个单子范畴。若我们将此单子范畴记作$\cat{V}$，就可以讨论在$\cat{V}$上的范畴$\cat{C}$。
 
-Beside size reasons, we might be interested in generalizing hom-sets to
-something that has more structure than mere sets. For instance, a
-traditional category doesn't have the notion of a distance between
-objects. Two objects are either connected by morphisms or not. All
-objects that are connected to a given object are its neighbors. Unlike
-in real life; in a category, a friend of a friend of a friend is as
-close to me as my bosom buddy. In a suitably enriched category, we can
-define distances between objects.
+除了大小原因外，我们可能还希望将Hom集推广到比普通集合更具结构的对象。例如，传统范畴不具备对象间距离的概念。两个对象要么由态射连接，要么没有连接。所有与给定对象相连的对象都是它的邻居。这与现实不同；在范畴中，朋友的朋友的朋友与密友同样亲近。在适当丰富化的范畴中，我们可以定义对象间的距离。
 
-There is one more very practical reason to get some experience with
-enriched categories, and that's because a very useful online source of
-categorical knowledge, the \urlref{https://ncatlab.org/}{nLab}, is written
-mostly in terms of enriched categories.
+还有一个非常实用的理由让我们需要获得丰富化范畴的经验：因为一个非常有用的范畴论在线知识库\urlref{https://ncatlab.org/}{nLab}主要就是用丰富化范畴的语言书写的。
 
-\section{Why Monoidal Category?}
+\section{为何需要单子范畴？}
 
-When constructing an enriched category we have to keep in mind that we
-should be able to recover the usual definitions when we replace the
-monoidal category with $\Set$ and hom-objects with hom-sets. The
-best way to accomplish this is to start with the usual definitions and
-keep reformulating them in a point-free manner --- that is, without
-naming elements of sets.
+构造丰富化范畴时，我们需要牢记：当把单子范畴替换为$\Set$并将同态对象替换为Hom集时，应当能够恢复常规定义。实现这一目标的最佳方式是从常规定义出发，以"无点"方式（即不涉及集合元素名称的方式）持续重构它们。
 
-Let's start with the definition of composition. Normally, it takes a
-pair of morphisms, one from $\cat{C}(b, c)$ and one from
-$\cat{C}(a, b)$ and maps it to a morphism from $\cat{C}(a, c)$. In
-other words it's a mapping:
-\[\cat{C}(b, c)\times{}\cat{C}(a, b) \to \cat{C}(a, c)\]
-This is a function between sets --- one of them being the Cartesian
-product of two hom-sets. This formula can be easily generalized by
-replacing Cartesian product with something more general. A categorical
-product would work, but we can go even further and use a completely
-general tensor product.
+让我们从组合律的定义开始。通常情况下，它取一对态射：一个来自$\cat{C}(b, c)$，另一个来自$\cat{C}(a, b)$，并将其映射到$\cat{C}(a, c)$中的态射。换句话说，这是一个映射：
+$$\cat{C}(b, c)\times{}\cat{C}(a, b) \to \cat{C}(a, c)$$
+这是集合之间的函数——其中一个集合是两个Hom集的笛卡尔积。通过用更一般的结构替代笛卡尔积，这个公式可以轻松推广。范畴积是可行的，但我们甚至可以用完全一般的张量积。
 
-Next come the identity morphisms. Instead of picking individual elements
-from hom-sets, we can define them using functions from the singleton set
-$\cat{1}$:
-\[j_a \Colon \cat{1} \to \cat{C}(a, a)\]
-Again, we could replace the singleton set with the terminal object, but
-we can go even further by replacing it with the unit $i$ of the
-tensor product.
+接下来考虑恒等态射。与其从Hom集中选取单独元素，不如用从单元素集合$\cat{1}$出发的函数来定义它们：
+$$j_a \Colon \cat{1} \to \cat{C}(a, a)$$
+同样，我们可以用终对象替代单元素集合，但更进一步的做法是用张量积的单位元$i$来替代。
 
-As you can see, objects taken from some monoidal category $\cat{V}$ are
-good candidates for hom-set replacement.
+如您所见，从某个单子范畴$\cat{V}$中取出的对象很适合作为Hom集的替代品。
 
-\section{Monoidal Category}
+\section{单范畴}
 
-We've talked about monoidal categories before, but it's worth restating
-the definition. A monoidal category defines a tensor product that is a
-bifunctor:
-\[\otimes \Colon \cat{V}\times{}\cat{V} \to \cat{V}\]
-We want the tensor product to be associative, but it's enough to satisfy
-associativity up to natural isomorphism. This isomorphism is called the
-associator. Its components are:
-\[\alpha_{a b c} \Colon (a \otimes b) \otimes c \to a \otimes (b \otimes c)\]
-It must be natural in all three arguments.
+我们之前讨论过单范畴，但重新陈述其定义是有意义的。单范畴定义了一个作为双函子的张量积：
+$$\otimes \Colon \cat{V}\times{}\cat{V} \to \cat{V}$$
+我们希望张量积具有结合律，但只需满足到自然同构的程度即可。这种同构称为结合子（associator），其分量为：
+$$\alpha_{a b c} \Colon (a \otimes b) \otimes c \to a \otimes (b \otimes c)$$
+它必须在所有三个变元中自然成立。
 
-A monoidal category must also define a special unit object $i$
-that serves as the unit of the tensor product; again, up to natural
-isomorphism. The two isomorphisms are called, respectively, the left and
-the right unitor, and their components are:
+单范畴还必须定义一个特殊的单位对象 $i$，作为张量积的单位元；同样地，该性质只需满足到自然同构。这两个同构分别称为左单位子和右单位子（left/right unitor），其分量为：
 \begin{align*}
   \lambda_a & \Colon i \otimes a \to a \\
   \rho_a    & \Colon a \otimes i \to a
 \end{align*}
-The associator and the unitors must satisfy coherence conditions:
+结合子与单位子必须满足如下相容条件：
 
 \begin{figure}[H]
   \centering
@@ -118,50 +66,28 @@ The associator and the unitors must satisfy coherence conditions:
 \end{figure}
 
 \noindent
-A monoidal category is called \newterm{symmetric} if there is a natural
-isomorphism with components:
-\[\gamma_{a b} \Colon a \otimes b \to b \otimes a\]
-whose ``square is one'':
-\[\gamma_{b a} \circ \gamma_{a b} = \idarrow[a \otimes b]\]
-and which is consistent with the monoidal structure.
+若存在分量为
+$$\gamma_{a b} \Colon a \otimes b \to b \otimes a$$
+的自然同构，并且满足「平方等于恒等」条件：
+$$\gamma_{b a} \circ \gamma_{a b} = \idarrow[a \otimes b]$$
+同时与单结构相容，则该单范畴称为\newterm{对称单范畴（symmetric monoidal category）}。
 
-An interesting thing about monoidal categories is that you may be able
-to define the internal hom (the function object) as the right adjoint to
-the tensor product. You may recall that the standard definition of the
-function object, or the exponential, was through the right adjoint to
-the categorical product. A category in which such an object existed for
-any pair of objects was called Cartesian closed. Here is the adjunction
-that defines the internal hom in a monoidal category:
-\[\cat{V}(a \otimes b, c) \sim \cat{V}(a, [b, c])\]
-Following
+单范畴的一个有趣特性是，你可能可以将内态同态（函数对象）定义为张量积的右伴随。你或许记得，函数对象（即指数对象）的标准定义是通过范畴积的右伴随给出的。对于任意对象对都存在这种对象的范畴被称为笛卡尔闭范畴。以下伴随关系定义了单范畴中的内态同态：
+$$\cat{V}(a \otimes b, c) \sim \cat{V}(a, [b, c])$$
+根据
 \urlref{http://www.tac.mta.ca/tac/reprints/articles/10/tr10.pdf}{G. M.
-  Kelly}, I'm using the notation ${[}b, c{]}$ for the internal
-hom. The counit of this adjunction is the natural transformation whose
-components are called evaluation morphisms:
-\[\varepsilon_{a b} \Colon ([a, b] \otimes a) \to b\]
-Notice that, if the tensor product is not symmetric, we may define
-another internal hom, denoted by ${[}{[}a, c{]}{]}$, using the
-following adjunction:
-\[\cat{V}(a \otimes b, c) \sim \cat{V}(b, [[a, c]])\]
-A monoidal category in which both are defined is called \newterm{biclosed}. An
-example of a category that is not biclosed is the category of
-endofunctors in $\Set$, with functor composition serving as tensor
-product. That's the category we used to define monads.
+  Kelly}的记号约定，我采用${[}b, c{]}$表示内态同态。该伴随的余单位是一个自然变换，其分量称为求值态射：
+$$\varepsilon_{a b} \Colon ([a, b] \otimes a) \to b$$
+请注意，若张量积不对称，我们可以使用如下伴随定义另一个内态同态${[}{[}a, c{]}{]}$：
+$$\cat{V}(a \otimes b, c) \sim \cat{V}(b, [[a, c]])$$
+同时定义这两种内态同态的单范畴称为\newterm{双闭（biclosed）}。非双闭范畴的一个典型例子是集合范畴$\Set$上的自函子范畴，其张量积由函子复合构成——这正是我们用来定义单子（monad）的那个范畴。
 
-\section{Enriched Category}
+\section{丰富范畴}
 
-A category $\cat{C}$ enriched over a monoidal category $\cat{V}$ replaces
-hom-sets with hom-objects. To every pair of objects $a$ and
-$b$ in $\cat{C}$ we associate an object $\cat{C}(a, b)$ in
-$\cat{V}$. We use the same notation for hom-objects as we used for
-hom-sets, with the understanding that they don't contain morphisms. On
-the other hand, $\cat{V}$ is a regular (non-enriched) category with
-hom-sets and morphisms. So we are not entirely rid of sets --- we just
-swept them under the rug.
+一个在单子范畴 $\cat{V}$ 上丰富的范畴 $\cat{C}$ 将同态集替换为同态对象。对于 $\cat{C}$ 中的每对对象 $a$ 和 $b$，我们关联一个 $\cat{V}$ 中的对象 $\cat{C}(a, b)$。我们使用与同态集相同的记号表示同态对象（hom-object），但需明确它们并不包含态射。另一方面，$\cat{V}$ 是具有同态集和态射的常规（非丰富化）范畴。因此我们并未彻底摆脱集合——只是将它们隐藏到了底层结构之下。
 
-Since we cannot talk about individual morphisms in $\cat{C}$, composition
-of morphisms is replaced by a family of morphisms in $\cat{V}$:
-\[\circ \Colon \cat{C}(b, c) \otimes \cat{C}(a, b) \to \cat{C}(a, c)\]
+由于无法讨论 $\cat{C}$ 中的单个态射，态射的合成被 $\cat{V}$ 中的态射族取代：
+$$\circ \Colon \cat{C}(b, c) \otimes \cat{C}(a, b) \to \cat{C}(a, c)$$
 
 \begin{figure}[H]
   \centering
@@ -169,10 +95,9 @@ of morphisms is replaced by a family of morphisms in $\cat{V}$:
 \end{figure}
 
 \noindent
-Similarly, identity morphisms are replaced by a family of morphisms in
-$\cat{V}$:
-\[j_a \Colon i \to \cat{C}(a, a)\]
-where $i$ is the tensor unit in $\cat{V}$.
+类似地，单位态射被替换为 $\cat{V}$ 中的态射族：
+$$j_a \Colon i \to \cat{C}(a, a)$$
+其中 $i$ 是 $\cat{V}$ 中的张量单位。
 
 \begin{figure}[H]
   \centering
@@ -180,8 +105,7 @@ where $i$ is the tensor unit in $\cat{V}$.
 \end{figure}
 
 \noindent
-Associativity of composition is defined in terms of the associator in
-$\cat{V}$:
+结合律通过 $\cat{V}$ 中的结合约束（associator）定义：
 
 \begin{figure}[H]
   \centering
@@ -200,7 +124,7 @@ $\cat{V}$:
 \end{figure}
 
 \noindent
-Unit laws are likewise expressed in terms of unitors:
+单位律同样通过单位约束（unitor）表达：
 
 \begin{figure}[H]
   \centering
@@ -229,119 +153,49 @@ Unit laws are likewise expressed in terms of unitors:
   \end{subfigure}
 \end{figure}
 
-\section{Preorders}
+\section{预序}
 
-A preorder is defined as a thin category, one in which every hom-set is
-either empty or a singleton. We interpret a non-empty set
-$\cat{C}(a, b)$ as the proof that $a$ is less than or equal to
-$b$. Such a category can be interpreted as enriched over a very
-simple monoidal category that contains just two objects, $0$ and $1$
-(sometimes called $\mathit{False}$ and $\mathit{True}$). Besides the mandatory identity
-morphisms, this category has a single morphism going from $0$ to $1$, let's
-call it $0 \to 1$. A simple monoidal structure can be
-established in it, with the tensor product modeling the simple
-arithmetic of $0$ and $1$ (i.e., the only non-zero product is $1 \otimes 1$).
-The identity object in this category is $1$. This is a strict monoidal
-category, that is, the associator and the unitors are identity
-morphisms.
+预序定义为一个薄范畴，即其中每个态射集要么为空要么为单元素集合。我们将非空的态射集 $\cat{C}(a, b)$ 解释为 $a$ 小于等于 $b$ 的证明。这种范畴可以视为在仅包含两个对象 $0$ 和 $1$（有时称为 $\mathit{False}$ 和 $\mathit{True}$）的极简幺半范畴上的丰富化范畴。除了必要的恒等态射外，该范畴还包含唯一的从 $0$ 到 $1$ 的态射 $0 \to 1$。通过将张量积定义为 $0$ 和 $1$ 的简单算术运算（即唯一的非零乘积为 $1 \otimes 1$），可建立简单的幺半结构。该范畴的单位对象是 $1$，且这是一个严格幺半范畴，即结合子和单位子均为恒等态射。
 
-Since in a preorder the-hom set is either empty or a singleton, we can
-easily replace it with a hom-object from our tiny category. The enriched
-preorder $\cat{C}$ has a hom-object $\cat{C}(a, b)$ for any pair of
-objects $a$ and $b$. If $a$ is less than or equal
-to $b$, this object is $1$; otherwise it's $0$.
+由于在预序中态射集要么为空要么为单元素集，我们可以轻易地用这个微小范畴中的同调对象替代它。富化的预序 $\cat{C}$ 对任意对象对 $a,b$ 都具有同调对象 $\cat{C}(a, b)$。若 $a \leqslant b$，该对象为 $1$；否则为 $0$。
 
-Let's have a look at composition. The tensor product of any two objects
-is $0$, unless both of them are $1$, in which case it's $1$. If it's $0$, then
-we have two options for the composition morphism: it could be either
-$\idarrow[0]$ or $0 \to 1$. But if it's $1$, then the only
-option is $\idarrow[1]$. Translating this back to relations, this says
-that if $a \leqslant b$ and $b \leqslant c$ then
-$a \leqslant c$, which is exactly the transitivity law we
-need.
+观察组合性质：任意两个对象的张量积为 $0$，除非两者均为 $1$ 时结果为 $1$。当结果为 $0$ 时，组合态射有两种选择：$\idarrow[0]$ 或 $0 \to 1$；而结果为 $1$ 时只能选择 $\idarrow[1]$。将其还原为关系语言，这表示若 $a \leqslant b$ 且 $b \leqslant c$，则必有 $a \leqslant c$，这正是预序所需的传递律。
 
-What about the identity? It's a morphism from $1$ to $\cat{C}(a, a)$.
-There is only one morphism going from $1$, and that's the identity
-$\idarrow[1]$, so $\cat{C}(a, a)$ must be $1$. It means that
-$a \leqslant a$, which is the reflexivity law for a
-preorder. So both transitivity and reflexivity are automatically
-enforced, if we implement a preorder as an enriched category.
+关于恒等性：它是从 $1$ 到 $\cat{C}(a, a)$ 的态射。从 $1$ 出发仅有恒等态射 $\idarrow[1]$，因此 $\cat{C}(a, a)$ 必为 $1$，这意味着 $a \leqslant a$，即预序的自反律。由此可见，若将预序实现为丰富化范畴，则传递性和自反性会自动满足。
 
-\section{Metric Spaces}
+\section{度量空间}
 
-An interesting example is due to
+一个有趣的例子归功于
 \urlref{http://www.tac.mta.ca/tac/reprints/articles/1/tr1.pdf}{William
-  Lawvere}. He noticed that metric spaces can be defined using enriched
-categories. A metric space defines a distance between any two objects.
-This distance is a non-negative real number. It's convenient to include
-infinity as a possible value. If the distance is infinite, there is no
-way of getting from the starting object to the target object.
+  Lawvere}。他注意到度量空间可以通过充实范畴(enriched categories)来定义。度量空间定义了任意两个对象之间的距离，这种距离是非负实数。我们通常会将无穷大作为可能的取值包含进来，当距离为无穷大时，表示无法从起点对象到达目标对象。
 
-There are some obvious properties that have to be satisfied by
-distances. One of them is that the distance from an object to itself
-must be zero. The other is the triangle inequality: the direct distance
-is no larger than the sum of distances with intermediate stops. We don't
-require the distance to be symmetric, which might seem weird at first
-but, as Lawvere explained, you can imagine that in one direction you're
-walking uphill, while in the other you're going downhill. In any case,
-symmetry may be imposed later as an additional constraint.
+距离函数需要满足若干明显性质：其中之一是对象到自身的距离必须为零；另一个是三角不等式(triangle inequality)，即直接距离不大于经过中间点的距离之和。我们不要求距离具有对称性，这初看可能显得奇怪，正如Lawvere所解释的那样，可以想象在一个方向上是上坡（需要更大代价），而在另一方向则是下坡。当然，如有必要，后续可以额外施加对称性约束。
 
-So how can a metric space be cast into a categorical language? We have
-to construct a category in which hom-objects are distances. Mind you,
-distances are not morphisms but hom-objects. How can a hom-object be a
-number? Only if we can construct a monoidal category $\cat{V}$ in which
-these numbers are objects. Non-negative real numbers (plus infinity)
-form a total order, so they can be treated as a thin category. A
-morphism between two such numbers $x$ and $y$ exists if
-and only if $x \geqslant y$ (note: this is the opposite
-direction to the one traditionally used in the definition of a
-preorder). The monoidal structure is given by addition, with zero
-serving as the unit object. In other words, the tensor product of two
-numbers is their sum.
+如何将度量空间转化为范畴论语言？我们需要构造一个范畴，其hom-对象就是距离。请注意，这里的距离不是态射而是hom-对象。如何让hom-对象成为数值？这需要构造一个单子范畴(monoidal category) $\cat{V}$，其中这些数值作为对象存在。非负实数（加上无穷大）构成全序关系，因此可以视为薄范畴(thin category)。两个数值$x$和$y$之间存在态射当且仅当$x \geqslant y$（注意：这与预序关系传统定义的方向相反）。单子结构由加法给出，零元作为单位对象。换句话说，两个数值的张量积就是它们的和。
 
-A metric space is a category enriched over such a monoidal category. A
-hom-object $\cat{C}(a, b)$ from object $a$ to $b$ is a
-non-negative (possibly infinite) number that we will call the distance
-from $a$ to $b$. Let's see what we get for identity and
-composition in such a category.
+度量空间是相对于此类单子范畴的充实范畴。从对象$a$到$b$的hom-对象$\cat{C}(a, b)$是一个非负（可能无穷）数值，我们称之为从$a$到$b$的距离。让我们考察此类范畴中的恒等和合成条件。
 
-By our definitions, a morphism from the tensorial unit, which is the
-number zero, to a hom-object $\cat{C}(a, a)$ is the relation:
-\[0 \geqslant \cat{C}(a, a)\]
-Since $\cat{C}(a, a)$ is a non-negative number, this condition tells
-us that the distance from $a$ to $a$ is always zero.
-Check!
+根据定义，从张量单位（即数值0）到hom-对象$\cat{C}(a, a)$的态射对应关系：
+$$0 \geqslant \cat{C}(a, a)$$
+由于$\cat{C}(a, a)$是非负数值，此条件表明从$a$到自身的距离恒为零。
+验证通过！
 
-Now let's talk about composition. We start with the tensor product of
-two abutting hom-objects, $\cat{C}(b, c) \otimes \cat{C}(a, b)$. We have defined
-the tensor product as the sum of the two distances. Composition is a
-morphism in $\cat{V}$ from this product to $\cat{C}(a, c)$. A morphism
-in $\cat{V}$ is defined as the greater-or-equal relation. In other words,
-the sum of distances from $a$ to $b$ and from $b$
-to $c$ is greater than or equal to the distance from $a$
-to $c$. But that's just the standard triangle inequality. Check!
+现在讨论合成条件。我们从两个相邻hom-对象的张量积开始：$\cat{C}(b, c) \otimes \cat{C}(a, b)$。根据定义张量积为两距离之和。合成是$\cat{V}$中从该乘积到$\cat{C}(a, c)$的态射。$\cat{V}$中的态射定义为大于等于关系。换句话说，从$a$到$b$再从$b$到$c$的距离之和大于等于从$a$到$c$的直接距离。这正是标准的三角不等式。验证通过！
 
-By re-casting the metric space in terms of an enriched category, we get
-the triangle inequality and the zero self-distance ``for free.''
+通过将度量空间重新表述为充实范畴，我们自然获得了三角不等式和零自反距离这两个性质。
 
-\section{Enriched Functors}
+\section{强化函子}
 
-The definition of a functor involves the mapping of morphisms. In the
-enriched setting, we don't have the notion of individual morphisms, so
-we have to deal with hom-objects in bulk. Hom-objects are objects in a
-monoidal category $\cat{V}$, and we have morphisms between them at our
-disposal. It therefore makes sense to define enriched functors between
-categories when they are enriched over the same monoidal category
-$\cat{V}$. We can then use morphisms in $\cat{V}$ to map the hom-objects
-between two enriched categories.
+函子的定义涉及态射的映射。在强化语境中，我们不再具有单个态射的概念，
+因此必须整体处理态射对象(hom-objects)。态射对象是对称单子范畴$\cat{V}$中的对象，
+我们可以利用其间的态射进行操作。因此，当两个范畴均以相同的对称单子范畴$\cat{V}$为强化基底时，
+我们便能定义它们之间的强化函子。此时可用$\cat{V}$中的态射来映射两个强化范畴间的态射对象。
 
-An \newterm{enriched functor} $F$ between two categories $\cat{C}$
-and $\cat{D}$, besides mapping objects to objects, also assigns, to every
-pair of objects in $\cat{C}$, a morphism in $\cat{V}$:
-\[F_{a b} \Colon \cat{C}(a, b) \to \cat{D}(F a, F b)\]
-A functor is a structure-preserving mapping. For regular functors it
-meant preserving composition and identity. In the enriched setting, the
-preservation of composition means that the following diagram commute:
+在两个范畴$\cat{C}$与$\cat{D}$之间的\newterm{强化函子}(enriched functor) $F$，
+除了将对象映射到对象外，还需为$\cat{C}$中的每对对象指定$\cat{V}$中的一个态射：
+$$F_{a b} \Colon \cat{C}(a, b) \to \cat{D}(F a, F b)$$
+函子本质是保持结构的映射。对于普通函子而言，这意味着保持复合运算和恒等态射。
+在强化语境中，保持复合结构意味着下图交换：
 
 \begin{figure}[H]
   \centering
@@ -358,8 +212,7 @@ preservation of composition means that the following diagram commute:
 \end{figure}
 
 \noindent
-The preservation of identity is replaced by the preservation of the
-morphisms in $\cat{V}$ that ``select'' the identity:
+保持恒等态射的条件被替换为保持$\cat{V}$中"选择"恒等元的态射：
 
 \begin{figure}[H]
   \centering
@@ -371,70 +224,36 @@ morphisms in $\cat{V}$ that ``select'' the identity:
   \end{tikzcd}
 \end{figure}
 
-\section{Self Enrichment}
+\section{自丰富化}
 
-A closed symmetric monoidal category may be self-enriched by replacing
-hom-sets with internal homs (see the definition above). To make this
-work, we have to define the composition law for internal homs. In other
-words, we have to implement a morphism with the following signature:
-\[[b, c] \otimes [a, b] \to [a, c]\]
-This is not much different from any other programming task, except that,
-in category theory, we usually use point free implementations. We start
-by specifying the set whose element it's supposed to be. In this case,
-it's a member of the hom-set:
-\[\cat{V}([b, c] \otimes [a, b], [a, c])\]
-This hom-set is isomorphic to:
-\[\cat{V}(([b, c] \otimes [a, b]) \otimes a, c)\]
-I just used the adjunction that defined the internal hom
-${[}a, c{]}$. If we can build a morphism in this new set, the
-adjunction will point us at the morphism in the original set, which we
-can then use as composition. We construct this morphism by composing
-several morphisms that are at our disposal. To begin with, we can use
-the associator $\alpha_{{[}b, c{]}\ {[}a, b{]}\ a}$ to reassociate the
-expression on the left:
-\[([b, c] \otimes [a, b]) \otimes a \to [b, c] \otimes ([a, b] \otimes a)\]
-We can follow it with the counit of the adjunction $\varepsilon_{a b}$:
-\[[b, c] \otimes ([a, b] \otimes a) \to [b, c] \otimes b\]
-And use the counit $\varepsilon_{b c}$ again to get to $c$. We have
-thus constructed a morphism:
-\[\varepsilon_{b c}\ .\ (\idarrow[{[b, c]}] \otimes \varepsilon_{a b})\ .\ \alpha_{[b, c] [a, b] a}\]
-that is an element of the hom-set:
-\[\cat{V}(([b, c] \otimes [a, b]) \otimes a, c)\]
-The adjunction will give us the composition law we were looking for.
+一个闭对称单子范畴可以通过用内部Hom对象替代态射集来实现自丰富化（见上文定义）。为了实现这一点，我们需要为内部Hom对象定义合成律。换句话说，我们需要实现具有以下形式的态射：
+$$[b, c] \otimes [a, b] \to [a, c]$$
+这与普通编程任务差别不大，只不过在范畴论中我们通常采用无点式实现。我们首先指定该元素所属的集合，即如下Hom集：
+$$\cat{V}([b, c] \otimes [a, b], [a, c])$$
+这个Hom集同构于：
+$$\cat{V}(([b, c] \otimes [a, b]) \otimes a, c)$$
+这里刚使用了定义内部Hom $[a, c]$ 的伴随关系。如果我们能在新的Hom集中构建某个态射，该伴随关系就会指引我们找到原始Hom集中的对应态射，从而作为所需的合成律。我们通过组合若干现有态射来构造这个态射。首先，我们可以使用结合子 $\alpha_{[b, c]\ [a, b]\ a}$ 对左侧表达式重新结合：
+$$([b, c] \otimes [a, b]) \otimes a \to [b, c] \otimes ([a, b] \otimes a)$$
+接着应用伴随关系的余单位 $\varepsilon_{a b}$：
+$$[b, c] \otimes ([a, b] \otimes a) \to [b, c] \otimes b$$
+再次应用余单位 $\varepsilon_{b c}$ 即可得到 $c$。于是我们构造出如下态射：
+$$\varepsilon_{b c}\ .\ (\idarrow[{[b, c]}] \otimes \varepsilon_{a b})\ .\ \alpha_{[b, c] [a, b] a}$$
+它属于Hom集：
+$$\cat{V}(([b, c] \otimes [a, b]) \otimes a, c)$$
+通过伴随关系就得到了我们所求的合成律。
 
-Similarly, the identity:
-\[j_a \Colon i \to [a, a]\]
-is a member of the following hom-set:
-\[\cat{V}(i, [a, a])\]
-which is isomorphic, through adjunction, to:
-\[\cat{V}(i \otimes a, a)\]
-We know that this hom-set contains the left identity $\lambda_a$. We can
-define $j_a$ as its image under the adjunction.
+同样地，恒等态射：
+$$j_a \Colon i \to [a, a]$$
+属于如下Hom集：
+$$\cat{V}(i, [a, a])$$
+通过伴随关系该Hom集同构于：
+$$\cat{V}(i \otimes a, a)$$
+我们知道这个Hom集包含左单位元 $\lambda_a$。我们可以定义 $j_a$ 为该元素通过伴随关系对应的像。
 
-A practical example of self-enrichment is the category $\Set$ that
-serves as the prototype for types in programming languages. We've seen
-before that it's a closed monoidal category with respect to Cartesian
-product. In $\Set$, the hom-set between any two sets is itself a
-set, so it's an object in $\Set$. We know that it's isomorphic to
-the exponential set, so the external and the internal homs are
-equivalent. Now we also know that, through self-enrichment, we can use
-the exponential set as the hom-object and express composition in terms
-of Cartesian products of exponential objects.
+自丰富化的一个实际例子是范畴 $\Set$，它是编程语言类型系统的原型。此前我们已知 $\Set$ 关于笛卡尔积构成闭单子范畴。在 $\Set$ 中，任意两个集合间的Hom集本身也是集合，因此属于 $\Set$ 的对象。我们知道它同构于指数集合，故外部Hom与内部Hom在此等价。现在我们还知道，通过自丰富化，我们可以用指数集合作为Hom对象，并以指数对象的笛卡尔积来表达合成运算。
 
-\section{Relation to $\cat{2}$-Categories}
+\section{与$\cat{2}$-范畴的关系}
 
-I talked about $\cat{2}$-categories in the context of $\Cat$, the category
-of (small) categories. The morphisms between categories are functors,
-but there is an additional structure: natural transformations between
-functors. In a $\cat{2}$-category, the objects are often called zero-cells;
-morphisms, $1$-cells; and morphisms between morphisms, $2$-cells. In
-$\Cat$ the $0$-cells are categories, $1$-cells are functors, and
-$2$-cells are natural transformations.
+我在$\Cat$（小范畴的范畴）的语境下讨论过$\cat{2}$-范畴。范畴间的态射是函子，但还存在额外的结构：函子之间的自然变换。在$\cat{2}$-范畴中，对象常被称为零维胞腔(zero-cells)；态射被称为一维胞腔($1$-cells)；态射间的态射被称为二维胞腔($2$-cells)。在$\Cat$中，零维胞腔是范畴，一维胞腔是函子，二维胞腔是自然变换。
 
-But notice that functors between two categories form a category too; so,
-in $\Cat$, we really have a \emph{hom-category} rather than a
-hom-set. It turns out that, just like $\Set$ can be treated as a
-category enriched over $\Set$, $\Cat$ can be treated as a
-category enriched over $\Cat$. Even more generally, just like
-every category can be treated as enriched over $\Set$, every
-$\cat{2}$-category can be considered enriched over $\Cat$.
+但需要注意的是，两个范畴间的函子本身也构成一个范畴；因此在$\Cat$中，我们实际上拥有一个\emph{同态范畴}(hom-category)而非同态集(hom-set)。事实上，正如$\Set$可以被视为在$\Set$上充实的范畴，$\Cat$也可以被视为在$\Cat$上充实的范畴。更一般地，正如每个范畴都可以被视为在$\Set$上充实的范畴，每个$\cat{2}$-范畴都可以被视为在$\Cat$上充实的范畴。

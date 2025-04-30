@@ -1,18 +1,10 @@
 % !TEX root = ../../ctfp-print.tex
 
-\lettrine[lhang=0.17]{I}{f you mention monads} to a programmer, you'll probably end up talking
-about effects. To a mathematician, monads are about algebras. We'll talk
-about algebras later --- they play an important role in programming ---
-but first I'd like to give you a little intuition about their relation
-to monads. For now, it's a bit of a hand-waving argument, but bear with
-me.
+\lettrine[lhang=0.17]{如}{果你向程序员提起单子}，很可能会谈到效应（effects）。对于数学家来说，单子则与代数有关。我们稍后会讨论代数——它们在编程中扮演重要角色——但首先我想让你直观了解它与单子的关系。目前这只是一个粗略的类比，请暂且接受这种表述方式。
 
-Algebra is about creating, manipulating, and evaluating expressions.
-Expressions are built using operators. Consider this simple expression:
-\[x^2 + 2 x + 1\]
-This expression is formed using variables like $x$, and constants
-like $1$ or $2$, bound together with operators like plus or times. As
-programmers, we often think of expressions as trees.
+代数涉及表达式的创建、操作和求值。表达式通过算符构建而成。考虑这个简单表达式：
+$$x^2 + 2 x + 1$$
+该表达式由变量（如$x$）、常量（如1或2）通过加法、乘法等算符组合而成。作为程序员，我们通常将表达式视为树状结构。
 
 \begin{figure}[H]
   \centering
@@ -20,98 +12,51 @@ programmers, we often think of expressions as trees.
 \end{figure}
 
 \noindent
-Trees are containers so, more generally, an expression is a container
-for storing variables. In category theory, we represent containers as
-endofunctors. If we assign the type $a$ to the variable
-$x$, our expression will have the type $m\ a$, where
-$m$ is an endofunctor that builds expression trees. (Nontrivial
-branching expressions are usually created using recursively defined
-endofunctors.)
+树是一种容器，更一般地，表达式是存储变量的容器。在范畴论中，我们用自函子（endofunctor）表示容器。若将类型$a$赋给变量$x$，我们的表达式将具有类型$m\ a$，其中$m$是构建表达式树的自函子。（非平凡分支表达式通常通过递归定义的自函子创建。）
 
-What's the most common operation that can be performed on an expression?
-It's substitution: replacing variables with expressions. For instance,
-in our example, we could replace $X$ with $y - 1$ to
-get:
-\[(y - 1)^2 + 2 (y - 1) + 1\]
-Here's what happened: We took an expression of type $m\ a$ and
-applied a transformation of type $a \to m\ b$
-($b$ represents the type of $y$). The result is an
-expression of type $m\ b$. Let me spell it out:
-\[m\ a \to (a \to m\ b) \to m\ b\]
-Yes, that's the signature of monadic bind.
+对表达式最常见的操作是什么？是替换：用表达式代替变量。例如在本例中，我们可以用$y - 1$替换$X$得到：
+$$(y - 1)^2 + 2 (y - 1) + 1$$
+具体过程如下：我们取一个类型为$m\ a$的表达式，并应用类型为$a \to m\ b$的变换（$b$代表$y$的类型），结果得到类型为$m\ b$的表达式。明确写出就是：
+$$m\ a \to (a \to m\ b) \to m\ b$$
+没错，这就是单子bind的签名。
 
-That was a bit of motivation. Now let's get to the math of the monad.
-Mathematicians use different notation than programmers. They prefer to
-use the letter $T$ for the endofunctor, and Greek letters: $\mu$ for
-\code{join} and $\eta$ for \code{return}. Both \code{join} and
-\code{return} are polymorphic functions, so we can guess that they
-correspond to natural transformations.
+以上是动机阐述。现在进入单子的数学定义。数学家使用不同于程序员的记号：他们习惯用字母$T$表示自函子，希腊字母$\mu$表示\code{join}，$\eta$表示\code{return}。这两个函数都是多态的，因此可以猜测它们对应自然变换。
 
-Therefore, in category theory, a monad is defined as an endofunctor
-$T$ equipped with a pair of natural transformations $\mu$ and $\eta$.
+因此在范畴论中，单子被定义为配备了一对自然变换$\mu$和$\eta$的自函子$T$。
 
-$\mu$ is a natural transformation from the square of the functor $T^2$
-back to $T$. The square is simply the functor composed with
-itself, $T \circ T$ (we can only do this kind of squaring for
-endofunctors).
-\[\mu \Colon T^2 \to T\]
-The component of this natural transformation at an object $a$ is
-the morphism:
-\[\mu_a \Colon T (T a) \to T a\]
-which, in $\Hask$, translates directly to our definition of
-\code{join}.
+$\mu$是从函子平方$T^2$到$T$的自然变换。这里的平方指函子与其自身的复合$T \circ T$（只有自函子才能进行此类"平方"运算）。
+$$\mu \Colon T^2 \to T$$
+该自然变换在对象$a$处的分量是态射：
+$$\mu_a \Colon T (T a) \to T a$$
+在$\Hask$范畴中，这直接对应我们熟悉的\code{join}定义。
 
-$\eta$ is a natural transformation between the identity functor $I$
-and $T$:
-\[\eta \Colon I \to T\]
-Considering that the action of $I$ on the object $a$ is
-just $a$, the component of $\eta$ is given by the morphism:
-\[\eta_a \Colon a \to T a\]
-which translates directly to our definition of \code{return}.
+$\eta$是恒等函子$I$到$T$的自然变换：
+$$\eta \Colon I \to T$$
+由于恒等函子作用于对象$a$的结果就是$a$本身，$\eta$在$a$处的分量由以下态射给出：
+$$\eta_a \Colon a \to T a$$
+这正好对应我们定义的\code{return}。
 
-These natural transformations must satisfy some additional laws. One way
-of looking at it is that these laws let us define a Kleisli category for
-the endofunctor $T$. Remember that a Kleisli arrow between
-$a$ and $b$ is defined as a morphism
-$a \to T b$. The composition of two such arrows
-(I'll write it as a circle with the subscript $T$) can be
-implemented using $\mu$:
-\[g \circ_T f = \mu_c \circ (T g) \circ f\]
-where
+这些自然变换必须满足额外定律。一种理解方式是：这些定律允许我们为自函子$T$定义克莱斯利范畴（Kleisli category）。记住，克莱斯利箭头（arrow）$a \to b$定义为态射$a \to T b$。两个这样的箭头（用带下标$T$的圆圈表示）的复合可通过$\mu$实现：
+$$g \circ_T f = \mu_c \circ (T g) \circ f$$
+其中
 \begin{gather*}
   f \Colon a \to T b \\
   g \Colon b \to T c
 \end{gather*}
-Here $T$, being a functor, can be applied to the morphism
-$g$. It might be easier to recognize this formula in Haskell
-notation:
+这里作为函子的$T$可以作用于态射$g$。用Haskell记号更容易识别这个公式：
 
 \src{snippet01}
-or, in components:
+或者用分量形式表示：
 
 \src{snippet02}
-In terms of the algebraic interpretation, we are just composing two
-successive substitutions.
+从代数解释的角度看，这只是连续两次替换的合成。
 
-For Kleisli arrows to form a category we want their composition to be
-associative, and $\eta_a$ to be the identity Kleisli arrow at
-$a$. This requirement can be translated to monadic laws for $\mu$ and
-$\eta$. But there is another way of deriving these laws that makes them look
-more like monoid laws. In fact $\mu$ is often called
-\emph{multiplication}, and $\eta$ -- \emph{unit}.
+要使克莱斯利箭头构成范畴，要求其复合满足结合律，且$\eta_a$成为$a$处的单位箭头。这一要求可转化为$\mu$和$\eta$的单子定律。但另一种推导方式使其更像幺半群定律。事实上$\mu$常被称为\emph{乘法}，$\eta$被称为\emph{单位元}。
 
-Roughly speaking, the associativity law states that the two ways of
-reducing the cube of $T$, $T^3$, down to $T$ must
-give the same result. Two unit laws (left and right) state that when
-$\eta$ is applied to $T$ and then reduced by $\mu$, we
-get back $T$.
+粗略地说，结合律要求以两种不同方式将$T$的立方$T^3$约简到$T$时结果相同。两个单位元律（左/右）要求当$\eta$作用于$T$后经$\mu$约简时，应回到原始的$T$。
 
-Things are a little tricky because we are composing natural
-transformations and functors. So a little refresher on horizontal
-composition is in order. For instance, $T^3$ can be seen as a
-composition of $T$ after $T^2$. We can apply to it the
-horizontal composition of two natural transformations:
-\[I_T \circ \mu\]
+此处有些微妙之处，因为我们是在组合自然变换和函子。因此需要复习水平组合（horizontal composition）知识。例如$T^3$可视作$T^2$后再作$T$的复合。我们可以对其应用两个自然变换的水平组合：
+$$I_T \circ \mu$$
 
 \begin{figure}[H]
   \centering
@@ -119,16 +64,10 @@ horizontal composition of two natural transformations:
 \end{figure}
 
 \noindent
-and get $T \circ T$; which can be further reduced to $T$ by
-applying $\mu$. $I_T$ is the identity natural transformation
-from $T$ to $T$. You will often see the notation for this
-type of horizontal composition $I_T \circ \mu$ shortened to
-$T \circ \mu$. This notation is unambiguous because it makes no sense to
-compose a functor with a natural transformation, therefore $T$
-must mean $I_T$ in this context.
+从而得到$T \circ T$；再通过$\mu$进一步约简为$T$。$I_T$是从$T$到自身的恒等自然变换。这类水平组合$I_T \circ \mu$的记号常简化为$T \circ \mu$。此记号无歧义，因为函子与自然变换直接组合没有意义，故此处$T$必然指$I_T$。
 
 \noindent
-We can also draw the diagram in the (endo-) functor category ${[}\cat{C}, \cat{C}{]}$:
+我们也可以在自函子范畴${[}\cat{C}, \cat{C}{]}$中绘制该图示：
 
 \begin{figure}[H]
   \centering
@@ -136,10 +75,7 @@ We can also draw the diagram in the (endo-) functor category ${[}\cat{C}, \cat{C
 \end{figure}
 
 \noindent
-Alternatively, we can treat $T^3$ as the composition of
-$T^2 \circ T$ and apply $\mu \circ T$ to it. The result is also
-$T \circ T$ which, again, can be reduced to $T$ using $\mu$. We
-require that the two paths produce the same result.
+另一种方式是将$T^3$视作$T^2 \circ T$的复合并应用$\mu \circ T$。结果同样是$T \circ T$，再次通过$\mu$约简为$T$。我们要求这两种路径产生相同结果。
 
 \begin{figure}[H]
   \centering
@@ -147,12 +83,7 @@ require that the two paths produce the same result.
 \end{figure}
 
 \noindent
-Similarly, we can apply the horizontal composition $\eta \circ T$ to the
-composition of the identity functor $I$ after $T$ to
-obtain $T^2$, which can then be reduced using $\mu$. The
-result should be the same as if we applied the identity natural
-transformation directly to \code{T}. And, by analogy, the same should
-be true for $T \circ \eta$.
+类似地，我们可以将水平组合$\eta \circ T$应用于恒等函子$I$后再作$T$的复合，得到$T^2$，再通过$\mu$约简。结果应与直接对$T$应用恒等自然变换相同。同理，$T \circ \eta$的情况也应成立。
 
 \begin{figure}[H]
   \centering
@@ -160,119 +91,71 @@ be true for $T \circ \eta$.
 \end{figure}
 
 \noindent
-You can convince yourself that these laws guarantee that the composition
-of Kleisli arrows indeed satisfies the laws of a category.
+你可以验证这些定律确实保证了克莱斯利箭头的复合满足范畴公理。
 
-The similarities between a monad and a monoid are striking. We have
-multiplication $\mu$, unit $\eta$, associativity, and unit laws. But our
-definition of a monoid is too narrow to describe a monad as a monoid. So
-let's generalize the notion of a monoid.
+单子与幺半群的相似性令人印象深刻：都有乘法$\mu$、单位元$\eta$、结合律和单位律。但我们对幺半群的定义过于狭隘，不足以描述单子。因此需要推广幺半群的概念。
 
-\section{Monoidal Categories}
+\section{幺半范畴}
 
-Let's go back to the conventional definition of a monoid. It's a set
-with a binary operation and a special element called unit. In Haskell,
-this can be expressed as a typeclass:
+回到传统的幺半群定义：它是一个带有二元运算和特殊单位元素的集合。在Haskell中可用类型类表达：
 
 \src{snippet03}
-The binary operation \code{mappend} must be associative and unital
-(i.e., multiplication by the unit \code{mempty} is a no-op).
+二元运算\code{mappend}必须满足结合律和单位律（即与单位元\code{mempty}相乘不起作用）。
 
-Notice that, in Haskell, the definition of \code{mappend} is curried.
-It can be interpreted as mapping every element of \code{m} to a
-function:
+注意Haskell中\code{mappend}的定义是柯里化的。它可以解读为将每个\code{m}元素映射为函数：
 
 \src{snippet04}
-It's this interpretation that gives rise to the definition of a monoid
-as a single-object category where endomorphisms
-\code{(m -> m)} represent the elements of the monoid.
-But because currying is built into Haskell, we could as well have
-started with a different definition of multiplication:
+正是这种解读导致了将幺半群定义为单对象范畴的观点，其中自同态\code{(m -> m)}代表幺半群元素。但由于Haskell内置了柯里化，我们本可以从不同的乘法定义出发：
 
 \src{snippet05}
-Here, the Cartesian product \code{(m, m)} becomes the source of pairs
-to be multiplied.
+此处笛卡尔积\code{(m, m)}成为待乘元素对的来源。
 
-This definition suggests a different path to generalization: replacing
-the Cartesian product with categorical product. We could start with a
-category where products are globally defined, pick an object \code{m}
-there, and define multiplication as a morphism:
-\[\mu \Colon m\times{}m \to m\]
-We have one problem though: In an arbitrary category we can't peek
-inside an object, so how do we pick the unit element? There is a trick
-to it. Remember how element selection is equivalent to a function from
-the singleton set? In Haskell, we could replace the definition of
-\code{mempty} with a function:
+该定义暗示了另一种推广路径：用范畴积替代笛卡尔积。我们可以从一个全局定义了积的范畴出发，选取对象\code{m}，并定义乘法为态射：
+$$\mu \Colon m\times{}m \to m$$
+但存在一个问题：在任意范畴中无法观察对象内部结构，如何选取单位元素？这里有个技巧：记得元素选择等价于从单元素集的函数吗？在Haskell中可以用函数替代\code{mempty}的定义：
 
 \src{snippet06}
-The singleton is the terminal object in $\Set$, so it's natural to
-generalize this definition to any category that has a terminal object
-$t$:
-\[\eta \Colon t \to m\]
-This lets us pick the unit ``element'' without having to talk about
-elements.
+单元素集是$\Set$范畴的终对象，因此可将此定义推广到任何具有终对象$t$的范畴：
+$$\eta \Colon t \to m$$
+这使我们无需谈论元素即可选取单位"元素"。
 
-Unlike in our previous definition of a monoid as a single-object
-category, monoidal laws here are not automatically satisfied --- we have
-to impose them. But in order to formulate them we have to establish the
-monoidal structure of the underlying categorical product itself. Let's
-recall how monoidal structure works in Haskell first.
+与之前将幺半群定义为单对象范畴不同，此时幺半群定律不会自动满足——必须显式施加。为此我们需要建立底层范畴积本身的幺半结构。先回顾Haskell中的幺半结构。
 
-We start with associativity. In Haskell, the corresponding equational
-law is:
+从结合律开始。Haskell对应的等式定律为：
 
 \src{snippet07}
-Before we can generalize it to other categories, we have to rewrite it
-as an equality of functions (morphisms). We have to abstract it away
-from its action on individual variables --- in other words, we have to
-use point-free notation. Knowing that the Cartesian product is a
-bifunctor, we can write the left hand side as:
+要推广到其他范畴，需要将其重写为函数（态射）相等式。必须抽象掉对个别变量的作用——换句话说，使用无点（point-free）记法。利用笛卡尔积作为双函子的性质，左边可写为：
 
 \src{snippet08}
-and the right hand side as:
+右边可写为：
 
 \src{snippet09}
-This is almost what we want. Unfortunately, the Cartesian product is not
-strictly associative --- \code{(x, (y, z))} is not the same as
-\code{((x, y), z)} --- so we can't just write point-free:
+这几乎达到目的。遗憾的是笛卡尔积并非严格结合——\code{(x, (y, z))}不等于\code{((x, y), z)}——因此不能直接写成无点形式：
 
 \src{snippet10}
-On the other hand, the two nestings of pairs are isomorphic. There is an
-invertible function called the associator that converts between them:
+另一方面，这两种配对嵌套方式是同构的。存在称为结合子（associator）的可逆函数在两者间转换：
 
 \src{snippet11}
-With the help of the associator, we can write the point-free
-associativity law for \code{mu}:
+借助结合子，可以写出\code{mu}的无点结合律：
 
 \src{snippet12}
-We can apply a similar trick to unit laws which, in the new notation,
-take the form:
+对单位律也可采用类似技巧，新记法下的定律形式为：
 
 \src{snippet13}
-They can be rewritten as:
+可重写为：
 
 \src{snippet14}
-The isomorphisms \code{lambda} and \code{rho} are called the left
-and right unitor, respectively. They witness the fact that the unit
-\code{()} is the identity of the Cartesian product up to isomorphism:
+这些同构\code{lambda}和\code{rho}分别称为左/右单位子。它们表明单位元\code{()}按同构是笛卡尔积的单位：
 
 \src{snippet15}
 
 \src{snippet16}
-The point-free versions of the unit laws are therefore:
+因此单位律的无点版本为：
 
 \src{snippet17}
-We have formulated point-free monoidal laws for \code{mu} and
-\code{eta} using the fact that the underlying Cartesian product itself
-acts like a monoidal multiplication in the category of types. Keep in
-mind though that the associativity and unit laws for the Cartesian
-product are valid only up to isomorphism.
+我们已利用底层笛卡尔积在类型范畴中表现得像幺半群乘法的事实，建立了\code{mu}和\code{eta}的无点幺半律。但请注意，笛卡尔积的结合律和单位律仅在同构意义下成立。
 
-It turns out that these laws can be generalized to any category with
-products and a terminal object. Categorical products are indeed
-associative up to isomorphism and the terminal object is the unit, also
-up to isomorphism. The associator and the two unitors are natural
-isomorphisms. The laws can be represented by commuting diagrams.
+事实证明这些定律可推广到任何具有积和终对象的范畴。范畴积确实按同构满足结合律，终对象作为单位元也是如此。结合子和两个单位子都是自然同构。这些定律可用交换图表示。
 
 \begin{figure}[H]
   \centering
@@ -280,65 +163,34 @@ isomorphisms. The laws can be represented by commuting diagrams.
 \end{figure}
 
 \noindent
-Notice that, because the product is a bifunctor, it can lift a pair of
-morphisms --- in Haskell this was done using \code{bimap}.
+注意由于积是双函子，它可以提升一对态射——在Haskell中这是通过\code{bimap}实现的。
 
-We could stop here and say that we can define a monoid on top of any
-category with categorical products and a terminal object. As long as we
-can pick an object $m$ and two morphisms $\mu$ and $\eta$ that satisfy
-monoidal laws, we have a monoid. But we can do better than that. We
-don't need a full-blown categorical product to formulate the laws for $\mu$
-and $\eta$. Recall that a product is defined through a universal construction
-that uses projections. We haven't used any projections in our
-formulation of monoidal laws.
+我们可以在此止步，声明在任何具有范畴积和终对象的范畴上都能定义幺半群。只要能选取对象$m$及满足幺半律的两个态射$\mu$和$\eta$，就构成了幺半群。但我们还能做得更好：定义$\mu$和$\eta$的定律并不需要完整的范畴积。回想积通过使用投影的泛构造定义，而在幺半律的表述中并未使用任何投影。
 
-A bifunctor that behaves like a product without being a product is
-called a \newterm{tensor product}, often denoted by the infix operator $\otimes$. A
-definition of a tensor product in general is a bit tricky, but we won't
-worry about it. We'll just list its properties --- the most important
-being associativity up to isomorphism.
+行为类似积但不是积的双函子称为\newterm{张量积}（tensor product），常用中缀运算符$\otimes$表示。一般而言张量积的定义较为复杂，但无需深究，只需列举其性质——最重要的是按同构满足结合律。
 
-Similarly, we don't need the object $t$ to be terminal. We never
-used its terminal property --- namely, the existence of a unique
-morphism from any object to it. What we require is that it works well in
-concert with the tensor product. Which means that we want it to be the
-unit of the tensor product, again, up to isomorphism. Let's put it all
-together:
+同样地，对象$t$不必是终对象。我们从未使用其终性质——即从任何对象到它的唯一态射的存在性。需要的是它能与张量积良好配合，即要求它是张量积的单位元（同样按同构）。综合起来：
 
-A monoidal category is a category $\cat{C}$ equipped with a bifunctor
-called the tensor product:
-\[\otimes \Colon \cat{C}\times{}\cat{C} \to \cat{C}\]
-and a distinct object $i$ called the unit object, together with
-three natural isomorphisms called, respectively, the associator and the
-left and right unitors:
+幺半范畴是配备了一个称为张量积的双函子：
+$$\otimes \Colon \cat{C}\times{}\cat{C} \to \cat{C}$$
+以及一个特殊的单位对象$i$，并带有三个自然同构分别称为结合子和左/右单位子：
 \begin{align*}
   \alpha_{a b c} & \Colon (a \otimes b) \otimes c \to a \otimes (b \otimes c) \\
   \lambda_a      & \Colon i \otimes a \to a                                   \\
   \rho_a         & \Colon a \otimes i \to a
 \end{align*}
-(There is also a coherence condition for simplifying a quadruple tensor
-product.)
+（还有一个简化四重张量积的协调条件。）
 
-What's important is that a tensor product describes many familiar
-bifunctors. In particular, it works for a product, a coproduct and, as
-we'll see shortly, for the composition of endofunctors (and also for
-some more esoteric products like Day convolution). Monoidal categories
-will play an essential role in the formulation of enriched categories.
+关键在于张量积描述了许多常见的双函子。尤其适用于积、余积，以及即将看到的自函子复合（还有诸如Day卷积等更晦涩的积）。幺半范畴将在富范畴（enriched categories）的表述中发挥核心作用。
 
-\section{Monoid in a Monoidal Category}
+\section{幺半范畴中的幺半群}
 
-We are now ready to define a monoid in a more general setting of a
-monoidal category. We start by picking an object $m$. Using the
-tensor product we can form powers of $m$. The square of
-$m$ is $m \otimes m$. There are two ways of forming the cube
-of $m$, but they are isomorphic through the associator. Similarly
-for higher powers of $m$ (that's where we need the coherence
-conditions). To form a monoid we need to pick two morphisms:
+我们现在可以在更一般的幺半范畴(monoidal category)框架下定义幺半群(monoid)了。我们首先选取一个对象 $m$。通过张量积(tensor product)，我们可以构造 $m$ 的各次幂：$m$ 的平方是 $m \otimes m$。构造 $m$ 的立方有两种方式，但它们通过结合子(associator)是同构的。类似地，$m$ 的更高次幂也成立（这就是我们需要协调条件(coherence conditions)的原因）。要构造一个幺半群，我们需要选取两个态射：
 \begin{align*}
   \mu  & \Colon m \otimes m \to m \\
   \eta & \Colon i \to m
 \end{align*}
-where $i$ is the unit object for our tensor product.
+其中 $i$ 是张量积的单位对象(unit object)。
 
 \begin{figure}[H]
   \centering
@@ -346,8 +198,7 @@ where $i$ is the unit object for our tensor product.
 \end{figure}
 
 \noindent
-These morphisms have to satisfy associativity and unit laws, which can
-be expressed in terms of the following commuting diagrams:
+这些态射必须满足结合律和单位律，可以用以下交换图(commuting diagram)来表述：
 
 \begin{figure}[H]
   \centering
@@ -360,39 +211,17 @@ be expressed in terms of the following commuting diagrams:
 \end{figure}
 
 \noindent
-Notice that it's essential that the tensor product be a bifunctor
-because we need to lift pairs of morphisms to form products such as
-$\mu \otimes \id$ or $\eta \otimes \id$. These diagrams are just a
-straightforward generalization of our previous results for categorical
-products.
+需要注意的是，张量积必须是一个双函子(bifunctor)这一点至关重要，因为我们需要提升态射对来构造诸如 $\mu \otimes \id$ 或 $\eta \otimes \id$ 这样的乘积。这些交换图只是我们之前关于范畴积结果的直接推广。
 
-\section{Monads as Monoids}
+\section{作为幺半群的单子}
 
-Monoidal structures pop up in unexpected places. One such place is the
-functor category. If you squint a little, you might be able to see
-functor composition as a form of multiplication. The problem is that not
-any two functors can be composed --- the target category of one has to
-be the source category of the other. That's just the usual rule of
-composition of morphisms --- and, as we know, functors are indeed
-morphisms in the category $\Cat$. But just like endomorphisms
-(morphisms that loop back to the same object) are always composable, so
-are endofunctors. For any given category $\cat{C}$, endofunctors from
-$\cat{C}$ to $\cat{C}$ form the functor category ${[}\cat{C}, \cat{C}{]}$. Its
-objects are endofunctors, and morphisms are natural transformations
-between them. We can take any two objects from this category, say
-endofunctors $F$ and $G$, and produce a third object $F \circ G$ ---
-an endofunctor that's their composition.
+张量积结构(monoidal structures)常常出现在意想不到的地方。函子范畴(functor category)就是这样一个场所。如果你稍加观察，或许能发现函子复合可以视为某种乘法形式。问题在于并非任意两个函子都能复合——其中一个的靶范畴必须等于另一个的源范畴。这正是态射复合的常规法则，正如我们所知，函子确实是范畴 $\Cat$ 中的态射。但就像自同态(endomorphisms)（返回同一对象的态射）总是可复合的，自函子(endofunctors)也是如此。对于给定范畴 $\cat{C}$，从 $\cat{C}$ 到自身的自函子构成函子范畴 ${[}\cat{C}, \cat{C}{]}$。其对象是自函子，态射是它们之间的自然变换(natural transformations)。我们可以从该范畴中任取两个对象，设为自函子 $F$ 和 $G$，并构造第三个对象 $F \circ G$——它们的复合自函子。
 
-Is endofunctor composition a good candidate for a tensor product? First,
-we have to establish that it's a bifunctor. Can it be used to lift a
-pair of morphisms --- here, natural transformations? The signature of
-the analog of \code{bimap} for the tensor product would look something
-like this:
-\[\mathit{bimap} \Colon (a \to b) \to (c \to d) \to (a \otimes c \to b \otimes d)\]
-If you replace objects by endofunctors, arrows by natural
-transformations, and tensor products by composition, you get:
-\[(F \to F') \to (G \to G') \to (F \circ G \to F' \circ G')\]
-which you may recognize as the special case of horizontal composition.
+自函子复合能否成为张量积的良好候选？首先需验证它是否构成双函子(bifunctor)。它能否用于提升一对态射——在此即自然变换？张量积对应的 \code{bimap} 签名应形如：
+$$\mathit{bimap} \Colon (a \to b) \to (c \to d) \to (a \otimes c \to b \otimes d)$$
+若将对象替换为自函子，箭头替换为自然变换，张量积替换为复合，则得到：
+$$(F \to F') \to (G \to G') \to (F \circ G \to F' \circ G')$$
+这正是水平复合(horizontal composition)的特例。
 
 \begin{figure}[H]
   \centering
@@ -400,21 +229,14 @@ which you may recognize as the special case of horizontal composition.
 \end{figure}
 
 \noindent
-We also have at our disposal the identity endofunctor $I$, which
-can serve as the identity for endofunctor composition --- our new tensor
-product. Moreover, functor composition is associative. In fact
-associativity and unit laws are strict --- there's no need for the
-associator or the two unitors. So endofunctors form a strict monoidal
-category with functor composition as tensor product.
+我们还拥有恒等自函子 $I$，它可充当自函子复合的单位元——我们的新张量积。更重要的是，函子复合具有结合性。事实上，此处的结合律和单位律是严格成立的——无需引入结合约束(associator)或两个单位约束(unitors)。因此自函子范畴以函子复合为张量积构成严格的单子范畴(strict monoidal category)。
 
-What's a monoid in this category? It's an object --- that is an
-endofunctor $T$; and two morphisms --- that is natural
-transformations:
+此范畴中的幺半群(monoid)是什么？它包含一个对象——即自函子 $T$；以及两个态射——即自然变换：
 \begin{gather*}
   \mu \Colon T \circ T \to T \\
   \eta \Colon I \to T
 \end{gather*}
-Not only that, here are the monoid laws:
+不仅如此，这些幺半群律(moid laws)如下：
 
 \begin{figure}[H]
   \centering
@@ -427,105 +249,69 @@ Not only that, here are the monoid laws:
 \end{figure}
 
 \noindent
-They are exactly the monad laws we've seen before. Now you understand
-the famous quote from Saunders Mac Lane:
+这正是我们之前见过的单子律(monad laws)。现在你应当理解Saunders Mac Lane的著名论断了：
 
 \begin{quote}
-  All told, monad is just a monoid in the category of endofunctors.
+  总而言之，单子不过是自函子范畴中的幺半群。
 \end{quote}
-You might have seen it emblazoned on some t-shirts at functional
-programming conferences.
+你或许曾在函数式编程会议的某些T恤上见过这句话大放异彩。
 
-\section{Monads from Adjunctions}
+\section{从伴随关系生成的单子}
 
-An \hyperref[adjunctions]{adjunction}\footnote{See ch.18 on \hyperref[adjunctions]{adjunctions}.}
-$L \dashv R$, is a pair of functors going back and forth between two
-categories $\cat{C}$ and $\cat{D}$. There are two ways of composing them
-giving rise to two endofunctors, $R \circ L$ and $L \circ R$.
-As per an adjunction, these endofunctors are related to identity
-functors through two natural transformations called unit and counit:
+一个\hyperref[adjunctions]{伴随}\footnote{参见第18章关于\hyperref[adjunctions]{伴随}的内容}
+$L \dashv R$，是由两个范畴$\cat{C}$和$\cat{D}$之间往返的一对函子构成。
+通过两种组合方式可得到两个自函子(endofunctor)：$R \circ L$和$L \circ R$。
+根据伴随关系的定义，这两个自函子通过称为单位元(unit)和余单位元(counit)的两个自然变换与恒等函子相关联：
 \begin{gather*}
   \eta \Colon I_{\cat{D}} \to R \circ L \\
   \varepsilon \Colon L \circ R \to I_{\cat{C}}
 \end{gather*}
-Immediately we see that the unit of an adjunction looks just like the
-unit of a monad. It turns out that the endofunctor $R \circ L$ is
-indeed a monad. All we need is to define the appropriate $\mu$ to go with
-the $\eta$. That's a natural transformation between the square of our
-endofunctor and the endofunctor itself or, in terms of the adjoint
-functors:
-\[R \circ L \circ R \circ L \to R \circ L\]
-And, indeed, we can use the counit to collapse the $L \circ R$ in
-the middle. The exact formula for $\mu$ is given by the horizontal
-composition:
-\[\mu = R \circ \varepsilon \circ L\]
-Monadic laws follow from the identities satisfied by the unit and counit
-of the adjunction and the interchange law.
+立即可见伴随关系的单位元与单子的单位元形式相同。事实上自函子$R \circ L$确实构成单子。
+我们只需定义合适的$\mu$来配合$\eta$即可。这是自函子平方与其自身的自然变换，用伴随函子表示即：
+$$R \circ L \circ R \circ L \to R \circ L$$
+实际上我们可以利用余单位元坍缩中间的$L \circ R$。$\mu$的具体公式由水平复合给出：
+$$\mu = R \circ \varepsilon \circ L$$
+单子公理(monadic laws)可从伴随关系的单位元和余单位元满足的恒等式及交换律推导得出。
 
-We don't see a lot of monads derived from adjunctions in Haskell,
-because an adjunction usually involves two categories. However, the
-definitions of an exponential, or a function object, is an exception.
-Here are the two endofunctors that form this adjunction:
+在Haskell中我们很少见到从伴随关系派生的单子，因为伴随关系通常涉及两个不同范畴。然而指数对象(exponential/object)或函数对象(function object)的定义是个例外。以下是形成该伴随关系的两个自函子：
 \begin{gather*}
   L z = z\times{}s \\
   R b = s \Rightarrow b
 \end{gather*}
-You may recognize their composition as the familiar state monad:
-\[R (L z) = s \Rightarrow (z\times{}s)\]
-We've seen this monad before in Haskell:
+您可能已认出它们的组合就是熟悉的state单子：
+$$R (L z) = s \Rightarrow (z\times{}s)$$
+我们在Haskell中见过这个单子：
 
 \src{snippet18}
-Let's also translate the adjunction to Haskell. The left functor is the
-product functor:
+现在也将伴随关系翻译到Haskell中。左函子是乘积函子：
 
 \src{snippet19}
-and the right functor is the reader functor:
+右函子是读者函子(reader functor)：
 
 \src{snippet20}
-They form the adjunction:
+它们构成伴随关系：
 
 \src{snippet21}
-You can easily convince yourself that the composition of the reader
-functor after the product functor is indeed equivalent to the state
-functor:
+您可以验证读者函子与乘积函子的组合确实等价于状态函子：
 
 \src{snippet22}
-As expected, the \code{unit} of the adjunction is equivalent to the
-\code{return} function of the state monad. The \code{counit} acts by
-evaluating a function acting on its argument. This is recognizable as
-the uncurried version of the function \code{runState}:
+正如预期，伴随关系的\code{unit}对应state单子的\code{return}函数。\code{counit}的作用是对函数作用于其参数进行求值。这正是\code{runState}函数的非柯里化版本：
 
 \src{snippet23}
-(uncurried, because in \code{counit} it acts on a pair).
+(非柯里化是因为\code{counit}作用于序对)
 
-We can now define \code{join} for the state monad as a component of
-the natural transformation $\mu$. For that we need a horizontal composition
-of three natural transformations:
-\[\mu = R \circ \varepsilon \circ L\]
-In other words, we need to sneak the counit $\varepsilon$ across one level of the
-reader functor. We can't just call \code{fmap} directly, because the
-compiler would pick the one for the \code{State} functor, rather than
-the \code{Reader} functor. But recall that \code{fmap} for the
-reader functor is just left function composition. So we'll use function
-composition directly.
+现在我们可以将\code{join}定义为自然变换$\mu$的分量。为此需要三个自然变换的水平复合：
+$$\mu = R \circ \varepsilon \circ L$$
+换句话说我们需要让余单位元$\varepsilon$穿过一层读者函子(reader functor)。不能直接调用\code{fmap}，因为编译器会选取\code{State}函子而非\code{Reader}函子的实现。但要注意读者函子的\code{fmap}本质上是左函数组合。因此我们将直接使用函数组合操作。
 
-We have to first peel off the data constructor \code{State} to expose
-the function inside the \code{State} functor. This is done using
-\code{runState}:
+首先需要剥离\code{State}数据构造器以暴露内部函数，这通过\code{runState}实现：
 
 \src{snippet24}
-Then we left-compose it with the counit, which is defined by
-\code{uncurry runState}. Finally, we clothe it back in the
-\code{State} data constructor:
+然后将其左组合(left-compose)余单位元，后者定义为\code{uncurry runState}。最后重新包装进\code{State}数据构造器：
 
 \src{snippet25}
-This is indeed the implementation of \code{join} for the
-\code{State} monad.
+这正是\code{State}单子\code{join}的标准实现。
 
-It turns out that not only every adjunction gives rise to a monad, but
-the converse is also true: every monad can be factorized into a
-composition of two adjoint functors. Such a factorization is not unique
-though.
+值得注意的是不仅每个伴随关系都能生成单子，反过来也成立：每个单子都可以分解为两个伴随函子的组合。不过这种分解并非唯一。
 
-We'll talk about the other endofunctor $L \circ R$ in the next
-section.
+我们将在下一节讨论另一个自函子$L \circ R$。

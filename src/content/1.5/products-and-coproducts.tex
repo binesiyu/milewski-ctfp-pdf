@@ -1,52 +1,17 @@
 % !TEX root = ../../ctfp-print.tex
 
-\lettrine[lhang=0.17]{T}{he Ancient Greek} playwright Euripides once said: ``Every man is like
-the company he is wont to keep.'' We are defined by our relationships.
-Nowhere is this more true than in category theory. If we want to single
-out a particular object in a category, we can only do this by describing
-its pattern of relationships with other objects (and itself). These
-relationships are defined by morphisms.
+\lettrine[lhang=0.17]{T}{he Ancient Greek} 剧作家欧里庇得斯曾说过：``与你常相处的人就是你的写照''。我们的关系定义了我们自身。在范畴论中，这一观点体现得尤为明显：若要确定某个特定对象，只能通过描述它与其他对象（包括自身）的关系模式来实现。而这些关系正是由态射(morphism)所定义的。
 
-There is a common construction in category theory called the
-\newterm{universal construction} for defining objects in terms of their
-relationships. One way of doing this is to pick a pattern, a particular
-shape constructed from objects and morphisms, and look for all its
-occurrences in the category. If it's a common enough pattern, and the
-category is large, chances are you'll have lots and lots of hits. The
-trick is to establish some kind of ranking among those hits, and pick
-what could be considered the best fit.
+范畴论中存在一种名为\newterm{泛构造}(universal construction)的通用方法，专门通过对象间的关系来定义对象。其基本思路是选择一个特定的模式——由对象和态射构成的特定形状——然后在范畴中搜索该模式的所有实例。若该模式足够普遍且范畴足够大，则很可能得到大量匹配结果。关键在于建立某种排序机制，从中筛选出最契合的匹配项。
 
-This process is reminiscent of the way we do web searches. A query is
-like a pattern. A very general query will give you large \emph{recall}:
-lots of hits. Some may be relevant, others not. To eliminate irrelevant
-hits, you refine your query. That increases its \emph{precision}.
-Finally, the search engine will rank the hits and, hopefully, the one
-result that you're interested in will be at the top of the list.
+这个过程类似于网络搜索行为。查询相当于模式：过于宽泛的查询会产生很高的\emph{召回率}(recall)，即大量结果，其中部分相关、部分无关。通过细化查询条件提升\emph{精确率}(precision)，搜索引擎最终会对结果排序，理想情况下你所需的结果会位列榜首。
 
-\section{Initial Object}
+\section{始对象}
 
-The simplest shape is a single object. Obviously, there are as many
-instances of this shape as there are objects in a given category. That's
-a lot to choose from. We need to establish some kind of ranking and try
-to find the object that tops this hierarchy. The only means at our
-disposal are morphisms. If you think of morphisms as arrows, then it's
-possible that there is an overall net flow of arrows from one end of the
-category to another. This is true in ordered categories, for instance in
-partial orders. We could generalize that notion of object precedence by
-saying that object $a$ is ``more initial'' than object $b$, if
-there is an arrow (a morphism) going from $a$ to $b$. We would
-then define \emph{the} initial object as one that has arrows going to
-all other objects. Obviously there is no guarantee that such an object
-exists, and that's okay. A bigger problem is that there may be too many
-such objects: The recall is good, but precision is lacking. The solution
-is to take a hint from ordered categories --- they allow at most one
-arrow between any two objects: there is only one way of being less-than
-or equal-to another object. Which leads us to this definition of the
-initial object:
+最简单的模式是一个单独的对象。显然，给定范畴中有多少对象就存在多少这种模式实例，这需要筛选的空间太大。我们只能借助态射建立排序机制，寻找层级顶端的对象。若将态射视为箭头，则范畴可能存在从一端到另一端的整体箭头流向，这在有序范畴（如偏序范畴）中确实成立。我们可以推广这种对象优先级概念：若存在从对象$a$到$b$的箭头，则称$a$比$b$「更具始性」。据此可定义\emph{始对象}为存在指向所有其他对象箭头的对象。显然这种对象未必存在，但这并无妨碍。更大的问题是可能存在多个这样的对象——此时召回率虽高但精确率不足。解决方案来自有序范畴的启示：任意两对象间至多存在一个态射，即「小于等于」关系具有唯一性。由此得到严格的始对象定义：
 
 \begin{quote}
-  The \textbf{initial object} is the object that has one and only one
-  morphism going to any object in the category.
+  \textbf{始对象}是存在且唯一存在一个态射指向范畴中所有其他对象的对象。
 \end{quote}
 
 \begin{figure}[H]
@@ -55,40 +20,26 @@ initial object:
 \end{figure}
 
 \noindent
-However, even that doesn't guarantee the uniqueness of the initial
-object (if one exists). But it guarantees the next best thing:
-uniqueness \newterm{up to isomorphism}. Isomorphisms are very important in
-category theory, so I'll talk about them shortly. For now, let's just
-agree that uniqueness up to isomorphism justifies the use of ``the'' in
-the definition of the initial object.
+即便如此也无法保证始对象（如果存在）的唯一性，但能保证其在\newterm{同构意义下唯一}(up to isomorphism)。同构(isomorphism)在范畴论中至关重要，稍后将详述。目前只需接受这种弱化唯一性足以支撑定义中「the」的使用。
 
-Here are some examples: The initial object in a partially ordered set
-(often called a \newterm{poset}) is its least element. Some posets don't
-have an initial object --- like the set of all integers, positive and
-negative, with less-than-or-equal relation for morphisms.
+举例而言：偏序集合(\newterm{poset})的始对象即为其最小元素。某些偏序集不存在始对象——例如全体整数（含正负）以小于等于关系为态射的范畴。
 
-In the category of sets and functions, the initial object is the empty
-set. Remember, an empty set corresponds to the Haskell type
-\code{Void} (there is no corresponding type in C++) and the unique
-polymorphic function from \code{Void} to any other type is called
-\code{absurd}:
+在集合范畴中，始对象是空集。记住，空集对应Haskell语言的\code{Void}类型（C++中无对应类型），从\code{Void}到任意类型的唯一多态函数称为\code{absurd}：
 
 \src{snippet01}
-It's this family of morphisms that makes \code{Void} the initial
-object in the category of types.
+正是这族态射使得\code{Void}成为类型范畴的始对象。
 
-\section{Terminal Object}
+\section{终对象}
 
-Let's continue with the single-object pattern, but let's change the way
-we rank the objects. We'll say that object $a$ is ``more terminal''
-than object $b$ if there is a morphism going from $b$ to
-$a$ (notice the reversal of direction). We'll be looking for an
-object that's more terminal than any other object in the category.
-Again, we will insist on uniqueness:
+让我们继续讨论单对象模式，但这次改变对对象的排序方式。
+我们说对象 $a$ 比对象 $b$ ``更具终性''（more terminal）
+当且仅当存在从 $b$ 到 $a$ 的态射（注意方向反转）。
+我们将寻找一个比范畴中所有其他对象都更具终性的对象。
+同样地，我们坚持唯一性：
 
 \begin{quote}
-  The \textbf{terminal object} is the object with one and only one
-  morphism coming to it from any object in the category.
+  \textbf{终对象} 是这样一个对象：对于范畴中的任意对象，
+  都有且仅有一个态射指向它。
 \end{quote}
 
 \begin{figure}[H]
@@ -97,151 +48,72 @@ Again, we will insist on uniqueness:
 \end{figure}
 
 \noindent
-And again, the terminal object is unique, up to isomorphism, which I
-will show shortly. But first let's look at some examples. In a poset,
-the terminal object, if it exists, is the biggest object. In the
-category of sets, the terminal object is a singleton. We've already
-talked about singletons --- they correspond to the \code{void} type in
-C++ and the unit type \code{()} in Haskell. It's a type that has only
-one value --- implicit in C++ and explicit in Haskell, denoted by
-\code{()}. We've also established that there is one and only one pure
-function from any type to the unit type:
+与始对象类似，终对象在同构意义下唯一（稍后将证明）。
+先来看几个例子：在偏序集（poset）中，若存在终对象，则其为最大元；
+在集合范畴中，终对象是单元素集合（singleton）。
+我们之前讨论过单元素集合——它们对应 C++ 中的 \code{void} 类型和 Haskell 中的单位类型 \code{()}。
+这是仅有单一值的类型：在 C++ 中该值隐含存在，而在 Haskell 中显式表示为 \code{()}。
+我们已建立结论：对于任意类型到单位类型的纯函数，存在且唯一存在一个实例：
 
 \src{snippet02}
-so all the conditions for the terminal object are satisfied.
+因此终对象的所有条件均得到满足。
 
-Notice that in this example the uniqueness condition is crucial, because
-there are other sets (actually, all of them, except for the empty set)
-that have incoming morphisms from every set. For instance, there is a
-Boolean-valued function (a predicate) defined for every type:
+请注意此例中唯一性条件的关键作用：
+实际上除空集外的所有集合都存在来自每个集合的入射态射。
+例如，对任意类型都存在布尔值函数（谓词）：
 
 \src{snippet03}
-But \code{Bool} is not a terminal object. There is at least one more
-\code{Bool}-valued function from every type (except \code{Void}, for which both functions are equal to \code{absurd}):
+但 \code{Bool} 并非终对象。对于每个类型（除 \code{Void} 外，此时两个函数都等于 \code{absurd}），
+至少存在另一个 \code{Bool} 值函数：
 
 \src{snippet04}
-Insisting on uniqueness gives us just the right precision to narrow down
-the definition of the terminal object to just one type.
+正是对唯一性的要求，使我们能精确限定终对象的定义仅对应单一类型。
 
-\section{Duality}
+\section{对偶性}
 
-You can't help but to notice the symmetry between the way we defined the
-initial object and the terminal object. The only difference between the
-two was the direction of morphisms. It turns out that for any category $\cat{C}$
-we can define the \newterm{opposite category} $\cat{C}^\mathit{op}$ just by
-reversing all the arrows. The opposite category automatically satisfies
-all the requirements of a category, as long as we simultaneously
-redefine composition. If original morphisms
-$f \Colon a \to b$ and $g \Colon b \to c$ composed
-to $h \Colon a \to c$ with $h = g \circ f$, then the reversed
-morphisms $f^\mathit{op} \Colon b \to a$ and $g^\mathit{op} \Colon c \to b$ will compose to
-$h^\mathit{op} \Colon c \to a$ with $h^\mathit{op} = f^\mathit{op} \circ g^\mathit{op}$. And reversing
-the identity arrows is a (pun alert!) no-op.
+我们定义初始对象与终止对象的方式之间存在对称性，这一点显而易见。两者唯一的区别在于态射的方向。事实上，对于任意范畴 $\cat{C}$，我们只需将所有箭头方向反转即可定义其\newterm{逆范畴（opposite category）} $\cat{C}^\mathit{op}$。只要同时重新定义合成运算，逆范畴就自动满足范畴的所有要求。若原范畴中态射 $f \Colon a \to b$ 与 $g \Colon b \to c$ 合成为 $h \Colon a \to c$ 且 $h = g \circ f$，则反转后的态射 $f^\mathit{op} \Colon b \to a$ 与 $g^\mathit{op} \Colon c \to b$ 将合成为 $h^\mathit{op} \Colon c \to a$ 且 $h^\mathit{op} = f^\mathit{op} \circ g^\mathit{op}$。而恒等箭头的反转操作实际上（双关警告！）没有任何效果(no-op)。
 
-Duality is a very important property of categories because it doubles
-the productivity of every mathematician working in category theory. For
-every construction you come up with, there is its opposite; and for
-every theorem you prove, you get one for free. The constructions in the
-opposite category are often prefixed with ``co'', so you have products
-and coproducts, monads and comonads, cones and cocones, limits and
-colimits, and so on. There are no cocomonads though, because reversing
-the arrows twice gets us back to the original state.
+对偶性是范畴论的重要性质，因为它使每位范畴论研究者的数学工作效率实现倍增。每个构造都有对应的对偶构造；每个定理都能自动生成一个对偶定理。逆范畴中的构造通常带有前缀"co"：积(product)与余积(coproduct)、单子(monad)与余单子(comonad)、锥(cone)与余锥(cocone)、极限(limit)与余极限(colimit)等等。但不存在"cocomonad"这样的概念，因为连续两次箭头反转会使结构回归原始状态。
 
-It follows then that a terminal object is the initial object in the
-opposite category.
+由此可得：终止对象即为逆范畴中的初始对象。
 
-\section{Isomorphisms}
+\section{同构}
 
-As programmers, we are well aware that defining equality is a nontrivial
-task. What does it mean for two objects to be equal? Do they have to
-occupy the same location in memory (pointer equality)? Or is it enough
-that the values of all their components are equal? Are two complex
-numbers equal if one is expressed as the real and imaginary part, and
-the other as modulus and angle? You'd think that mathematicians would
-have figured out the meaning of equality, but they haven't. They have
-the same problem of multiple competing definitions for equality. There
-is the propositional equality, intensional equality, extensional
-equality, and equality as a path in homotopy type theory. And then there
-are the weaker notions of isomorphism, and even weaker of equivalence.
+作为程序员，我们深知定义相等性是一项非平凡的任务。两个对象何时被认为是相等的？它们是否必须占据内存中的相同位置（指针相等）？还是只要其所有组成部分的值相等即可？当一个复数用实部与虚部表示，另一个用模长与角度表示时，它们是否相等？你可能会认为数学家早已厘清相等性的含义，但实际上他们并未解决这个问题。数学中同样存在多种相互竞争的相等性定义：命题相等性（propositional equality）、内涵相等性（intensional equality）、外延相等性（extensional equality），以及同伦类型理论中作为路径的相等性。此外还有更弱的概念：同构（isomorphism），甚至更弱的等价性（equivalence）。
 
-The intuition is that isomorphic objects look the same --- they have the
-same shape. It means that every part of one object corresponds to some
-part of another object in a one-to-one mapping. As far as our
-instruments can tell, the two objects are a perfect copy of each other.
-Mathematically it means that there is a mapping from object $a$ to
-object $b$, and there is a mapping from object $b$ back to
-object $a$, and they are the inverse of each other. In category
-theory we replace mappings with morphisms. An isomorphism is an
-invertible morphism; or a pair of morphisms, one being the inverse of
-the other.
+直观上，同构对象具有相同的外观——它们具有相同的形状。这意味着其中一个对象的每个部分都与另一个对象的某个部分形成一一对应。从我们的观测工具来看，这两个对象互为完美拷贝。数学上，这意味着存在从对象$a$到对象$b$的映射，也存在从$b$返回$a$的映射，且这两个映射互为逆映射。在范畴论中，我们将映射替换为态射（morphism）。同构是一个可逆态射；或者说一对态射，其中一个正是另一个的逆态射。
 
-We understand the inverse in terms of composition and identity: Morphism
-$g$ is the inverse of morphism $f$ if their composition is the
-identity morphism. These are actually two equations because there are
-two ways of composing two morphisms:
+我们通过复合与恒等来理解逆：当态射$g$与态射$f$的复合是恒等态射时，$g$就是$f$的逆。实际上这是两个方程，因为两个态射有两种复合方式：
 
 \src{snippet05}
-When I said that the initial (terminal) object was unique up to
-isomorphism, I meant that any two initial (terminal) objects are
-isomorphic. That's actually easy to see. Let's suppose that we have two
-initial objects $i_{1}$ and $i_{2}$. Since
-$i_{1}$ is initial, there is a unique morphism $f$ from
-$i_{1}$ to $i_{2}$. By the same token, since
-$i_{2}$ is initial, there is a unique morphism $g$ from
-$i_{2}$ to $i_{1}$. What's the composition of
-these two morphisms?
+当我之前说初始对象（terminal object）在同构意义下唯一时，意思是任意两个初始对象都是同构的。这一点其实很容易证明。假设我们有两个初始对象$i_{1}$和$i_{2}$。由于$i_{1}$是初始对象，存在唯一的态射$f$从$i_{1}$到$i_{2}$。同理，由于$i_{2}$也是初始对象，存在唯一的态射$g$从$i_{2}$到$i_{1}$。那么这两个态射的复合会是什么？
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{images/uniqueness.jpg}
-  \caption{All morphisms in this diagram are unique.}
+  \caption{此图中的所有态射都是唯一的。}
 \end{figure}
 
 \noindent
-The composition $g \circ f$ must be a morphism from $i_{1}$ to
-$i_{1}$. But $i_{1}$ is initial so there can only
-be one morphism going from $i_{1}$ to $i_{1}$.
-Since we are in a category, we know that there is an identity morphism
-from $i_{1}$ to $i_{1}$, and since there is room
-for only one, that must be it. Therefore $g \circ f$ is equal to
-identity. Similarly, $f \circ g$ must be equal to identity, because there
-can be only one morphism from $i_{2}$ back to
-$i_{2}$. This proves that $f$ and $g$ must be the
-inverse of each other. Therefore any two initial objects are isomorphic.
+复合$g \circ f$必定是从$i_{1}$到$i_{1}$的态射。但$i_{1}$是初始对象，因此从$i_{1}$到$i_{1}$只能有一个态射。由于我们处于范畴中，已知存在恒等态射从$i_{1}$到$i_{1}$，而由于唯一性，这个态射必然就是它本身。因此$g \circ f$等于恒等态射。同理，$f \circ g$也必须等于恒等态射，因为从$i_{2}$回到$i_{2}$的态射只能有一个。这就证明了$f$和$g$互为逆态射。因此任意两个初始对象都是同构的。
 
-Notice that in this proof we used the uniqueness of the morphism from
-the initial object to itself. Without that we couldn't prove the ``up to
-isomorphism'' part. But why do we need the uniqueness of $f$ and
-$g$? Because not only is the initial object unique up to
-isomorphism, it is unique up to \emph{unique} isomorphism. In principle,
-there could be more than one isomorphism between two objects, but that's
-not the case here. This ``uniqueness up to unique isomorphism'' is the
-important property of all universal constructions.
+请注意，在这个证明中我们使用了初始对象到自身的态射唯一性。没有这条性质，就无法证明"up to isomorphism"（在同构意义下）的结论。但我们为什么需要$f$和$g$的唯一性呢？因为不仅初始对象在同构意义下唯一，它实际上是在\emph{唯一}同构的意义下唯一。原则上，两个对象之间可能存在多个同构，但在此情形下并非如此。这种"唯一同构下的唯一性"正是所有泛构造（universal constructions）的重要特性。
 
-\section{Products}
+\section{积}
 
-The next universal construction is that of a product. We know what a
-Cartesian product of two sets is: it's a set of pairs. But what's the
-pattern that connects the product set with its constituent sets? If we
-can figure that out, we'll be able to generalize it to other categories.
+下一个泛构造是积（product）的概念。我们已经知道两个集合的笛卡尔积是什么：它是所有序对构成的集合。但积与其组成部分之间的关联模式是什么？如果我们能搞清楚这一点，就能将其推广到其他范畴。
 
-All we can say is that there are two functions, the projections, from
-the product to each of the constituents. In Haskell, these two functions
-are called \code{fst} and \code{snd} and they pick, respectively,
-the first and the second component of a pair:
+我们所能观察到的是，存在两个从积到每个组成部分的投影映射（projection）。在Haskell语言中，这两个函数被称为 \code{fst} 和 \code{snd}，分别用于提取序对的第一个和第二个分量：
 
 \src{snippet06}
 
 \src{snippet07}
-Here, the functions are defined by pattern matching their arguments: the
-pattern that matches any pair is \code{(x, y)}, and it extracts its
-components into variables \code{x} and \code{y}.
+这里通过模式匹配来定义函数：能够匹配任意序对的模式是 \code{(x, y)}，它将序对的两个分量分别绑定到变量 \code{x} 和 \code{y}。
 
-These definitions can be simplified even further with the use of
-wildcards:
+利用通配符可以使这些定义进一步简化：
 
 \src{snippet08}
-In C++, we would use template functions, for instance:
+在C++中，我们会使用模板函数，例如：
 
 \begin{snip}{cpp}
 template<class A, class B> A
@@ -249,12 +121,7 @@ fst(pair<A, B> const & p) {
     return p.first;
 }
 \end{snip}
-Equipped with this seemingly very limited knowledge, let's try to define
-a pattern of objects and morphisms in the category of sets that will
-lead us to the construction of a product of two sets, $a$ and
-$b$. This pattern consists of an object $c$ and two morphisms
-$p$ and $q$ connecting it to $a$ and $b$,
-respectively:
+基于这些看似有限的知识，让我们尝试在集合范畴中定义一种由对象和态射构成的模式，从而导出两个集合 $a$ 和 $b$ 的积。该模式包含一个对象 $c$ 以及分别连接 $c$ 到 $a$ 和 $b$ 的两个态射 $p$ 和 $q$：
 
 \src{snippet09}
 
@@ -264,8 +131,7 @@ respectively:
 \end{figure}
 
 \noindent
-All $c$s that fit this pattern will be considered candidates for
-the product. There may be lots of them.
+所有满足此模式的 $c$ 都将被视为积的候选对象（candidate）。这样的候选对象可能有多个。
 
 \begin{figure}[H]
   \centering
@@ -273,36 +139,19 @@ the product. There may be lots of them.
 \end{figure}
 
 \noindent
-For instance, let's pick, as our constituents, two Haskell types,
-\code{Int} and \code{Bool}, and get a sampling of candidates for
-their product.
+举例来说，假设我们的组成部分是Haskell类型 \code{Int} 和 \code{Bool}，我们可以得到多个候选积对象。
 
-Here's one: \code{Int}. Can \code{Int} be considered a candidate for
-the product of \code{Int} and \code{Bool}? Yes, it can --- and here
-are its projections:
+第一个候选对象是 \code{Int}。这个类型能否作为 \code{Int} 和 \code{Bool} 的积？答案是肯定的，其投影如下：
 
 \src{snippet10}
-That's pretty lame, but it matches the criteria.
+虽然这种设计很牵强，但它确实满足基本条件。
 
-Here's another one: \code{(Int, Int, Bool)}. It's a tuple of three
-elements, or a triple. Here are two morphisms that make it a legitimate
-candidate (we are using pattern matching on triples):
+另一个候选对象是 \code{(Int, Int, Bool)}，这是一个三元组。以下两个态射使其成为合法候选（我们使用三元组的模式匹配）：
 
 \src{snippet11}
-You may have noticed that while our first candidate was too small --- it
-only covered the \code{Int} dimension of the product; the second was
-too big --- it spuriously duplicated the \code{Int} dimension.
+您可能已经注意到：第一个候选对象过于简略——它只覆盖了积的 \code{Int} 维度；而第二个候选对象又过于冗余——它无谓地重复了 \code{Int} 维度。
 
-But we haven't explored yet the other part of the universal
-construction: the ranking. We want to be able to compare two instances
-of our pattern. We want to compare one candidate object $c$ and its
-two projections $p$ and $q$ with another candidate object
-$c'$ and its two projections $p'$ and $q'$. We would like
-to say that $c$ is ``better'' than $c'$ if there is a morphism
-$m$ from $c'$ to $c$ --- but that's too weak. We also
-want its projections to be ``better,'' or ``more universal,'' than the
-projections of $c'$. What it means is that the projections
-$p'$ and $q'$ can be reconstructed from $p$ and $q$ using $m$:
+但我们尚未探讨泛构造的另一部分：排序机制（ranking）。我们需要比较两个候选模式实例。设候选对象 $c$ 配备投影 $p$ 和 $q$，另一个候选对象 $c'$ 配备投影 $p'$ 和 $q'$。若存在从 $c'$ 到 $c$ 的态射 $m$，我们就认为 $c$ 比 $c'$ "更优"——但这还不够。我们还要求 $c$ 的投影比 $c'$ 的具有更强的"通用性"。具体而言，$p'$ 和 $q'$ 可以通过 $m$ 从 $p$ 和 $q$ 重构得到：
 
 \src{snippet12}
 
@@ -312,15 +161,9 @@ $p'$ and $q'$ can be reconstructed from $p$ and $q$ using $m$:
 \end{figure}
 
 \noindent
-Another way of looking at these equations is that $m$
-\emph{factorizes} $p'$ and $q'$. Just pretend that these
-equations are in natural numbers, and the dot is multiplication:
-$m$ is a common factor shared by $p'$ and $q'$.
+另一种理解方式是：$m$ 对 $p'$ 和 $q'$ 进行了\emph{因子分解}（factorizes）。可以想象这些方程对应自然数运算，其中点表示乘法：$m$ 就是 $p'$ 和 $q'$ 的公因子。
 
-Just to build some intuitions, let me show you that the pair
-\code{(Int, Bool)} with the two canonical projections, \code{fst}
-and \code{snd} is indeed \emph{better} than the two candidates I
-presented before.
+为了建立直观认识，让我们验证标准序对 \code{(Int, Bool)} 配备规范投影 \code{fst} 和 \code{snd} 确实优于前述两个候选对象。
 
 \begin{figure}[H]
   \centering
@@ -328,73 +171,47 @@ presented before.
 \end{figure}
 
 \noindent
-The mapping \code{m} for the first candidate is:
+对于第一个候选对象，对应的映射 \code{m} 为：
 
 \src{snippet13}
-Indeed, the two projections, \code{p} and \code{q} can be
-reconstructed as:
+此时两个投影 \code{p} 和 \code{q} 可重构为：
 
 \src{snippet14}
-The \code{m} for the second example is similarly uniquely determined:
+第二个例子中的 \code{m} 同样唯一确定：
 
 \src{snippet15}
-We were able to show that \code{(Int, Bool)} is better than either of
-the two candidates. Let's see why the opposite is not true. Could we
-find some \code{m'} that would help us reconstruct \code{fst}
-and \code{snd} from \code{p} and \code{q}?
+我们已证明 \code{(Int, Bool)} 优于这两个候选对象。现在考察反向情况为何不成立：是否存在某个 \code{m'} 能帮助我们从 \code{p} 和 \code{q} 重构 \code{fst} 和 \code{snd}？
 
 \src{snippet16}
-In our first example, \code{q} always returned \code{True} and we
-know that there are pairs whose second component is \code{False}. We
-can't reconstruct \code{snd} from \code{q}.
+在第一个例子中，\code{q} 始终返回 \code{True}，而我们知道存在第二个分量为 \code{False} 的序对。因此无法从 \code{q} 重构 \code{snd}。
 
-The second example is different: we retain enough information after
-running either \code{p} or \code{q}, but there is more than one way
-to factorize \code{fst} and \code{snd}. Because both \code{p} and
-\code{q} ignore the second component of the triple, our \code{m'}
-can put anything in it. We can have:
+第二个例子有所不同：通过 \code{p} 或 \code{q} 后仍保留足够信息，但分解方式不唯一。由于 \code{p} 和 \code{q} 都忽略三元组的第二个分量，我们的 \code{m'} 可以在该位置填充任意值。例如：
 
 \src{snippet17}
 
-or
+或
 \src{snippet18}
-and so on.
+等等。
 
-Putting it all together, given any type \code{c} with two projections
-\code{p} and \code{q}, there is a unique \code{m} from \code{c}
-to the Cartesian product \code{(a, b)} that factorizes them. In fact,
-it just combines \code{p} and \code{q} into a pair.
+综上所述，给定任意配备两个投影的类型 \code{c}，都存在唯一的映射 \code{m} 从 \code{c} 到笛卡尔积 \code{(a, b)} 实现分解。事实上，该映射就是将 \code{p} 和 \code{q} 组合成序对：
 
 \src{snippet19}
-That makes the Cartesian product \code{(a, b)} our best match, which
-means that this universal construction works in the category of sets. It
-picks the product of any two sets.
+这使得笛卡尔积 \code{(a, b)} 成为我们最佳的选择，表明该泛构造在集合范畴中有效。它可以选取任意两个集合的积。
 
-Now let's forget about sets and define a product of two objects in any
-category using the same universal construction. Such a product doesn't
-always exist, but when it does, it is unique up to a unique isomorphism.
+现在我们抛开集合范畴，用同样的泛构造定义任意范畴中两个对象的积。这样的积并不总是存在，但当存在时，其在同构意义下唯一。
 
 \begin{quote}
-  A \textbf{product} of two objects $a$ and $b$ is the object
-  $c$ equipped with two projections such that for any other object
-  $c'$ equipped with two projections there is a unique morphism
-  $m$ from $c'$ to $c$ that factorizes those projections.
+  两个对象 $a$ 和 $b$ 的\textbf{积}是一个配备两个投影的对象 $c$，满足：对于任何其他配备两个投影的对象 $c'$，都存在唯一的态射 $m$ 从 $c'$ 到 $c$ 实现投影的分解。
 \end{quote}
 
 \noindent
-A (higher order) function that produces the factorizing function
-\code{m} from two candidates is sometimes called the
-\newterm{factorizer}. In our case, it would be the function:
+将两个候选对象映射到分解函数 \code{m} 的高阶函数称为\newterm{分解器}（factorizer）。在本例中，该函数为：
 
 \src{snippet20}
 
-\section{Coproduct}
+\section{余积}
 
-Like every construction in category theory, the product has a dual,
-which is called the coproduct. When we reverse the arrows in the product
-pattern, we end up with an object $c$ equipped with two
-\emph{injections}, \code{i} and \code{j}: morphisms from $a$
-and $b$ to $c$.
+如同范畴论中的每个构造一样，乘积也有一个对偶概念，称为余积。当我们反转乘积模式中的箭头后，得到的对象 $c$ 配备了两个\emph{注入态射}，即 \code{i} 和 \code{j}：从 $a$ 和 $b$ 到 $c$ 的态射。
 
 \src{snippet21}
 
@@ -404,10 +221,7 @@ and $b$ to $c$.
 \end{figure}
 
 \noindent
-The ranking is also inverted: object $c$ is ``better'' than object
-$c'$ that is equipped with the injections $i'$ and $j'$
-if there is a morphism $m$ from $c$ to $c'$ that
-factorizes the injections:
+排序关系也被反转了：当存在一个从 $c$ 到 $c'$ 的态射 $m$ 能分解这些注入态射时，配备着注入态射 $i'$ 和 $j'$ 的对象 $c'$ 相比而言是「较差」的，而对象 $c$ 是「更优」的：
 
 \src{snippet22}
 
@@ -417,32 +231,16 @@ factorizes the injections:
 \end{figure}
 
 \noindent
-The ``best'' such object, one with a unique morphism connecting it to
-any other pattern, is called a coproduct and, if it exists, is unique up
-to unique isomorphism.
+这种具有唯一态射连接到任何其他模式的「最优」对象被称为余积，如果它存在，则在唯一同构的意义下是唯一的。
 
 \begin{quote}
-  A \textbf{coproduct} of two objects $a$ and $b$ is the object
-  $c$ equipped with two injections such that for any other object
-  $c'$ equipped with two injections there is a unique morphism
-  $m$ from $c$ to $c'$ that factorizes those injections.
+  两个对象 $a$ 和 $b$ 的\textbf{余积}是指配备有两个注入态射的对象 $c$，满足对于任何其他配备有两个注入态射的对象 $c'$，都存在唯一的态射 $m$ 从 $c$ 到 $c'$，使得这些注入态射可分解。
 \end{quote}
 
 \noindent
-In the category of sets, the coproduct is the \emph{disjoint union} of
-two sets. An element of the disjoint union of $a$ and $b$ is
-either an element of $a$ or an element of $b$. If the two sets
-overlap, the disjoint union contains two copies of the common part. You
-can think of an element of a disjoint union as being tagged with an
-identifier that specifies its origin.
+在集合范畴中，余积对应于两个集合的\emph{不交并}。$a$ 和 $b$ 的不交并中的元素要么来自 $a$，要么来自 $b$。若这两个集合有重叠部分，则不交并将包含该公共部分的两个副本。你可以将不交并中的元素视为附加了一个标识符来指明其来源。
 
-For a programmer, it's easier to understand a coproduct in terms of
-types: it's a tagged union of two types. C++ supports unions, but they
-are not tagged. It means that in your program you have to somehow keep
-track which member of the union is valid. To create a tagged union, you
-have to define a tag --- an enumeration --- and combine it with the
-union. For instance, a tagged union of an \code{int} and a
-\code{char const *} could be implemented as:
+对程序员来说，用类型的观点来理解余积会更容易：它是两个类型的\newterm{标签联合体}。C++支持联合体，但它们是没有标签的。这意味着在程序中你必须以某种方式追踪联合体中哪个成员是有效的。要创建带标签的联合体，你需要定义一个标签——枚举类型——并与联合体结合使用。例如，一个 \code{int} 和 \code{char const *} 的标签联合体可以实现如下：
 
 \begin{snip}{cpp}
 struct Contact {
@@ -450,9 +248,7 @@ struct Contact {
     union { int phoneNum; char const * emailAddr; };
 };
 \end{snip}
-The two injections can either be implemented as constructors or as
-functions. For instance, here's the first injection as a function
-\code{PhoneNum}:
+这两个注入态射可以实现为构造函数或函数。例如，以下是第一个注入函数 \code{PhoneNum}：
 
 \begin{snip}{cpp}
 Contact PhoneNum(int n) {
@@ -462,165 +258,80 @@ Contact PhoneNum(int n) {
     return c;
 }
 \end{snip}
-It injects an integer into \code{Contact}.
+它将整数注入到 \code{Contact} 中。
 
-A tagged union is also called a \newterm{variant}, and there is a very
-general implementation of a variant in the boost library,
-\code{boost::variant}.
+标签联合体也被称为\newterm{变体}，boost库中提供了非常通用的变体实现，即 \code{boost::variant}。
 
-In Haskell, you can combine any data types into a tagged union by
-separating data constructors with a vertical bar. The \code{Contact}
-example translates into the declaration:
+在Haskell中，你可以通过竖线分隔数据构造器的方式组合任意数据类型形成标签联合体。上述 \code{Contact} 示例对应的声明为：
 
 \src{snippet23}
-Here, \code{PhoneNum} and \code{EmailAddr} serve both as
-constructors (injections), and as tags for pattern matching (more about
-this later). For instance, this is how you would construct a contact
-using a phone number:
+其中 \code{PhoneNum} 和 \code{EmailAddr} 同时作为构造器（注入态射）和模式匹配的标签（更多相关内容稍后讨论）。例如，使用电话号码构造联系人的方式如下：
 
 \src{snippet24}
-Unlike the canonical implementation of the product that is built into
-Haskell as the primitive pair, the canonical implementation of the
-coproduct is a data type called \code{Either}, which is defined in the
-standard Prelude as:
+与Haskell中作为原始二元组内建的乘积规范实现不同，余积的规范实现是一个名为 \code{Either} 的数据类型，在标准预置模块中定义如下：
 
 \src{snippet25}
-It is parameterized by two types, \code{a} and \code{b} and has two
-constructors: \code{Left} that takes a value of type \code{a}, and
-\code{Right} that takes a value of type \code{b}.
+它由两个类型参数 \code{a} 和 \code{b} 参数化，包含两个构造器：接受类型 \code{a} 值的 \code{Left}，以及接受类型 \code{b} 值的 \code{Right}。
 
-Just as we've defined the factorizer for a product, we can define one
-for the coproduct. Given a candidate type \code{c} and two candidate
-injections \code{i} and \code{j}, the factorizer for \code{Either}
-produces the factoring function:
+正如我们为乘积定义过因子化函数一样，也可以为余积定义类似的因子化器。给定候选类型 \code{c} 和两个候选注入态射 \code{i} 和 \code{j}，针对 \code{Either} 的因子化器将生成对应的因子分解函数：
 
 \src{snippet26}
 
-\section{Asymmetry}
+\section{不对称性}
 
-We've seen two sets of dual definitions: The definition of a terminal
-object can be obtained from the definition of the initial object by
-reversing the direction of arrows; in a similar way, the definition of
-the coproduct can be obtained from that of the product. Yet in the
-category of sets the initial object is very different from the final
-object, and coproduct is very different from product. We'll see later
-that product behaves like multiplication, with the terminal object
-playing the role of one; whereas coproduct behaves more like the sum,
-with the initial object playing the role of zero. In particular, for
-finite sets, the size of the product is the product of the sizes of
-individual sets, and the size of the coproduct is the sum of the sizes.
+我们已经看到两组对偶定义：通过反转箭头方向，可以从初始对象(initial object)的定义得到终端对象(terminal object)的定义；类似地，可以从积(product)的定义得到余积(coproduct)的定义。然而在集合范畴中，初始对象与终端对象有本质区别，余积与积也有显著不同。我们稍后会看到积的行为类似于乘法，其中终端对象扮演单位元的角色；而余积更像加法，初始对象充当零元素的角色。特别地，对于有限集合，积的大小是各集合大小的乘积，而余积的大小是各集合大小的和。
 
-This shows that the category of sets is not symmetric with respect to
-the inversion of arrows.
+这表明集合范畴在箭头反向操作下并不对称。
 
-Notice that while the empty set has a unique morphism to any set (the
-\code{absurd} function), it has no morphisms coming back. The
-singleton set has a unique morphism coming to it from any set, but it
-\emph{also} has outgoing morphisms to every set (except for the empty
-one). As we've seen before, these outgoing morphisms from the terminal
-object play a very important role of picking elements of other sets (the
-empty set has no elements, so there's nothing to pick).
+注意空集到任意集合都有唯一的态射（即\code{absurd}函数），但反过来没有态射返回。单元素集合到任何集合都有唯一的入射态射，但它还存在从自身到每个非空集合的出射态射。正如之前所见，这些从终端对象出发的态射在选取其他集合元素时起关键作用（空集没有元素可选）。
 
-It's the relationship of the singleton set to the product that sets it
-apart from the coproduct. Consider using the singleton set, represented
-by the unit type \code{()}, as yet another --- vastly inferior ---
-candidate for the product pattern. Equip it with two projections
-\code{p} and \code{q}: functions from the singleton to each of the
-constituent sets. Each selects a concrete element from either set.
-Because the product is universal, there is also a (unique) morphism
-\code{m} from our candidate, the singleton, to the product. This
-morphism selects an element from the product set --- it selects a
-concrete pair. It also factorizes the two projections:
+正是单元素集合与积的关系使其区别于余积。考虑用单元素集合（由单位类型\code{()}表示）作为另一个——远不如实际积有效的——积模式候选者。为其配备两个投影\code{p}和\code{q}：从单元素集合到各个分量集合的函数。每个投影都会从相应集合中选择具体元素。由于积具有泛性质，存在从候选对象（单元素集合）到积的唯一态射\code{m}。这个态射从积集中选择一个元素——即选定具体有序对。它还能分解这两个投影：
 
 \src{snippet27}
-When acting on the singleton value \code{()}, the only element of the
-singleton set, these two equations become:
+当作用于单元素集合的唯一元素\code{()}时，这两个方程变为：
 
 \src{snippet28}
-Since \code{m ()} is the element of the product picked by \code{m},
-these equations tell us that the element picked by \code{p} from the
-first set, \code{p ()}, is the first component of the pair picked by
-\code{m}. Similarly, \code{q ()} is equal to the second component.
-This is in total agreement with our understanding that elements of the
-product are pairs of elements from the constituent sets.
+由于\code{m ()}是\code{m}选取的积集元素，这些方程告诉我们：\code{p}从第一个集合选取的元素\code{p ()}就是\code{m}选取有序对的第一个分量。同理，\code{q ()}等于第二个分量。这完全符合我们对积的理解：积的元素是分量集合元素的有序对。
 
-There is no such simple interpretation of the coproduct. We could try
-the singleton set as a candidate for a coproduct, in an attempt to
-extract the elements from it, but there we would have two injections
-going into it rather than two projections coming out of it. They'd tell
-us nothing about their sources (in fact, we've seen that they ignore the
-input parameter). Neither would the unique morphism from the coproduct
-to our singleton. The category of sets just looks very different when
-seen from the direction of the initial object than it does when seen
-from the terminal end.
+余积没有这种直观解释。我们可以尝试用单元素集合作为余积候选者来提取元素，但此时会有两个入射态射进入该对象而非两个投影态射离开它。这些入射态射不会透露其源集合的信息（实际上我们已看到它们忽略输入参数）。同样，从余积到单元素集合的唯一态射也不会提供信息。从初始对象端观察的集合范畴与从终端对象端观察的结果截然不同。
 
-This is not an intrinsic property of sets, it's a property of functions,
-which we use as morphisms in $\Set$. Functions are, in general,
-asymmetric. Let me explain.
+这不是集合本身的固有属性，而是我们用作$\Set$范畴态射的函数特性所致。函数本质上具有不对称性。让我解释如下：
 
-A function must be defined for every element of its domain set (in
-programming, we call it a \newterm{total} function), but it doesn't have to
-cover the whole codomain. We've seen some extreme cases of it: functions
-from a singleton set --- functions that select just a single element in
-the codomain. (Actually, functions from an empty set are the real
-extremes.) When the size of the domain is much smaller than the size of
-the codomain, we often think of such functions as embedding the domain
-in the codomain. For instance, we can think of a function from a
-singleton set as embedding its single element in the codomain. I call
-them \newterm{embedding} functions, but mathematicians prefer to give a
-name to the opposite: functions that tightly fill their codomains are
-called \newterm{surjective} or \newterm{onto}.
+一般来说，函数必须对其定义域集合的所有元素都有定义（在编程中称为\newterm{全函数}(total function)，但不必覆盖整个陪域。我们见过极端情况：从单元素集合到陪域的函数只选择陪域中的单个元素（实际上，从空集到任意集合的函数才是真正的极端情况）。当定义域规模远小于陪域时，我们常认为这类函数将定义域\emph{嵌入}陪域。例如，可将单元素集合的函数视为将其单一元素嵌入陪域。我称之为\newterm{嵌入}(embedding)函数，但数学家更倾向于命名相反情形：那些紧密填满陪域的函数被称为\newterm{满射}(surjective)或\newterm{映成}(onto)。
 
-The other source of asymmetry is that functions are allowed to map many
-elements of the domain set into one element of the codomain. They can
-collapse them. The extreme case are functions that map whole sets into a
-singleton. You've seen the polymorphic \code{unit} function that does
-just that. The collapsing can only be compounded by composition. A
-composition of two collapsing functions is even more collapsing than the
-individual functions. Mathematicians have a name for non-collapsing
-functions: they call them \newterm{injective} or \newterm{one-to-one}.
+另一种不对称来源是函数可以将定义域多个元素映射到陪域同一元素，即产生"坍缩"。最极端的例子是将整个集合映射到单元素的函数。你已经见过执行此操作的多态\code{unit}函数。组合操作会加剧这种坍缩性：两个坍缩函数的复合比单独函数更剧烈。数学家将非坍缩函数称为\newterm{单射}(injective)或\newterm{一一对应}(one-to-one)。
 
-Of course there are some functions that are neither embedding nor
-collapsing. They are called \newterm{bijections} and they are truly
-symmetric, because they are invertible. In the category of sets, an
-isomorphism is the same as a bijection.
+当然也存在既不嵌入也不坍缩的函数。它们被称为\newterm{双射}(bijection)，真正具有对称性，因为它们可逆。在集合范畴中，同构(isomorphism)等价于双射。
 
-\section{Challenges}
+\section{挑战}
 
 \begin{enumerate}
   \tightlist
   \item
-        Show that the terminal object is unique up to unique isomorphism.
+        证明终对象（terminal object）在唯一同构意义下唯一。
   \item
-        What is a product of two objects in a poset? Hint: Use the universal
-        construction.
+        在偏序集（poset）中两个对象的积（product）是什么？提示：使用泛构造（universal construction）。
   \item
-        What is a coproduct of two objects in a poset?
+        在偏序集中两个对象的余积（coproduct）是什么？
   \item
-        Implement the equivalent of Haskell \code{Either} as a generic type
-        in your favorite language (other than Haskell).
+        在你熟悉的编程语言（非Haskell）中实现与Haskell \code{Either}等价的泛型类型。
   \item
-        Show that \code{Either} is a ``better'' coproduct than \code{int}
-        equipped with two injections:
-
+        证明\code{Either}是比配备两个注入映射的\code{int}更优的余积：
+        
         \begin{snip}{cpp}
 int i(int n) { return n; }
 int j(bool b) { return b ? 0: 1; }
 \end{snip}
 
-        Hint: Define a function
-
+        提示：定义一个能分解\code{i}和\code{j}的函数
+        
         \begin{snip}{cpp}
 int m(Either const & e);
 \end{snip}
-
-        that factorizes \code{i} and \code{j}.
   \item
-        Continuing the previous problem: How would you argue that \code{int}
-        with the two injections \code{i} and \code{j} cannot be ``better''
-        than \code{Either}?
+        延续前一个问题：如何论证带注入映射\code{i}和\code{j}的\code{int}无法比\code{Either}更优？
   \item
-        Still continuing: What about these injections?
+        继续思考：以下注入映射的情况如何？
 
         \begin{snip}{cpp}
 int i(int n) {
@@ -631,17 +342,14 @@ int i(int n) {
 int j(bool b) { return b ? 0: 1; }
 \end{snip}
   \item
-        Come up with an inferior candidate for a coproduct of \code{int} and
-        \code{bool} that cannot be better than \code{Either} because it
-        allows multiple acceptable morphisms from it to \code{Either}.
+        构造一个\code{int}与\code{bool}的余积候选对象，其因允许从它到\code{Either}存在多个可接受态射而无法成为更优余积。
 \end{enumerate}
 
-\section{Bibliography}
+\section{参考文献}
 
 \begin{enumerate}
   \tightlist
   \item
         The Catsters,
-        \urlref{https://www.youtube.com/watch?v=upCSDIO9pjc}{Products and
-          Coproducts} video.
+        \urlref{https://www.youtube.com/watch?v=upCSDIO9pjc}{积与余积} 视频.
 \end{enumerate}

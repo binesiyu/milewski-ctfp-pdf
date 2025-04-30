@@ -1,16 +1,8 @@
 % !TEX root = ../../ctfp-print.tex
 
-\lettrine[lhang=0.17]{I}{f we interpret} endofunctors as ways of defining expressions, algebras
-let us evaluate them and monads let us form and manipulate them. By
-combining algebras with monads we not only gain a lot of functionality
-but we can also answer a few interesting questions.
+\lettrine[lhang=0.17]{如}{果我们将} 自函子解释为定义表达式的方式，则代数允许我们对其进行求值，而单子允许我们构造和操作这些表达式。通过将代数与单子结合，我们不仅获得了大量功能，还能回答一些有趣的问题。
 
-One such question concerns the relation between monads and adjunctions.
-As we've seen, every adjunction \hyperref[monads-categorically]{defines
-  a monad} (and a comonad). The question is: Can every monad (comonad) be
-derived from an adjunction? The answer is positive. There is a whole
-family of adjunctions that generate a given monad. I'll show you two
-such adjunctions.
+其中一个问题是单子与伴随关系之间的关联。正如我们所见，每个伴随关系 \hyperref[monads-categorically]{定义一个单子}（和一个余单子）。问题是：每个单子（余单子）是否都能由某个伴随关系导出？答案是肯定的。存在一整族伴随关系可以生成给定的单子。我将向你展示其中两个伴随关系。
 
 \begin{figure}[H]
   \centering
@@ -18,34 +10,18 @@ such adjunctions.
 \end{figure}
 
 \noindent
-Let's review the definitions. A monad is an endofunctor $m$
-equipped with two natural transformations that satisfy some coherence
-conditions. The components of these transformations at $a$ are:
+让我们先回顾定义。单子是一个配备两个满足相容条件的自然变换的自函子 $m$。这些变换在对象 $a$ 处的分量为：
 \begin{align*}
   \eta_a & \Colon a \to m\ a         \\
   \mu_a  & \Colon m\ (m\ a) \to m\ a
 \end{align*}
-An algebra for the same endofunctor is a selection of a particular
-object --- the carrier $a$ --- together with the morphism:
+该自函子的一个代数则是选择特定对象——载体 $a$——以及态射：
 \[\mathit{alg} \Colon m\ a \to a\]
-The first thing to notice is that the algebra goes in the opposite
-direction to $\eta_a$. The intuition is that $\eta_a$ creates a
-trivial expression from a value of type $a$. The first coherence
-condition that makes the algebra compatible with the monad ensures that
-evaluating this expression using the algebra whose carrier is $a$
-gives us back the original value:
+首先需要注意的是，代数的方向与 $\eta_a$ 相反。直观地说，$\eta_a$ 从类型为 $a$ 的值创建了一个平凡表达式。第一个相容条件要求代数与单子兼容，即用载体为 $a$ 的代数对该表达式求值能返回原始值：
 \[\mathit{alg} \circ \eta_a = \id_a\]
-The second condition arises from the fact that there are two ways of
-evaluating the doubly nested expression $m\ (m\ a)$. We can first
-apply $\mu_a$ to flatten the expression, and then use the evaluator
-of the algebra; or we can apply the lifted evaluator to evaluate the
-inner expressions, and then apply the evaluator to the result. We'd like
-the two strategies to be equivalent:
+第二个条件源于对双重嵌套表达式 $m\ (m\ a)$ 存在两种求值方式：我们可以先应用 $\mu_a$ 展平表达式再使用代数求值器；或者先应用提升后的求值器计算内部表达式，再对结果应用求值器。我们期望这两种策略等价：
 \[\mathit{alg} \circ \mu_a = \mathit{alg} \circ m\ \mathit{alg}\]
-Here, \code{m alg} is the morphism resulting from lifting
-$\mathit{alg}$ using the functor $m$. The following commuting
-diagrams describe the two conditions (I replaced $m$ with
-$T$ in anticipation of what follows):
+此处 \code{m alg} 是通过函子 $m$ 提升 $\mathit{alg}$ 得到的态射。以下交换图描述了这两个条件（为后续推导方便将 $m$ 替换为 $T$）：
 
 \begin{figure}[H]
   \centering
@@ -70,108 +46,50 @@ $T$ in anticipation of what follows):
 \end{figure}
 
 \noindent
-We can also express these conditions in Haskell:
+我们也可以用 Haskell 表达这些条件：
 
 \src{snippet01}
-Let's look at a small example. An algebra for a list endofunctor
-consists of some type \code{a} and a function that produces an
-\code{a} from a list of \code{a}. We can express this function using
-\code{foldr} by choosing both the element type and the accumulator
-type to be equal to \code{a}:
+来看一个小例子。列表自函子的一个代数包含某个类型 \code{a} 和一个从 \code{a} 列表生成 \code{a} 的函数。我们可以用 \code{foldr} 表达这个函数，令元素类型和累加器类型都等于 \code{a}：
 
 \src{snippet02}
-This particular algebra is specified by a two-argument function, let's
-call it \code{f}, and a value \code{z}. The list functor happens to
-also be a monad, with \code{return} turning a value into a singleton
-list. The composition of the algebra, here \code{foldr f z}, after
-\code{return} takes \code{x} to:
+这个特定代数由一个双参数函数（记作 \code{f}）和一个值 \code{z} 确定。列表函子恰好也是一个单子，其 \code{return} 将值转换为单元素列表。代数（此处为 \code{foldr f z}）与 \code{return} 的复合将 \code{x} 映射为：
 
 \src{snippet03}
-where the action of \code{f} is written in the infix notation. The
-algebra is compatible with the monad if the following coherence
-condition is satisfied for every \code{x}:
+其中 \code{f} 的作用以中缀形式书写。若以下相容条件对任意 \code{x} 成立，则该代数与单子兼容：
 
 \src{snippet04}
-If we look at \code{f} as a binary operator, this condition tells us
-that \code{z} is the right unit.
+若将 \code{f} 视为二元运算符，此条件表明 \code{z} 是右单位元。
 
-The second coherence condition operates on a list of lists. The action
-of \code{join} concatenates the individual lists. We can then fold the
-resulting list. On the other hand, we can first fold the individual
-lists, and then fold the resulting list. Again, if we interpret
-\code{f} as a binary operator, this condition tells us that this
-binary operation is associative. These conditions are certainly
-fulfilled when \code{(a, f, z)} is a monoid.
+第二个相容条件作用于列表的列表。\code{join} 的作用是连接各子列表，我们可以折叠合并后的列表；另一方面，也可以先分别折叠各子列表，再折叠合并后的列表。若将 \code{f} 视为二元运算符，此条件表明该运算是可结合的。当 \code{(a, f, z)} 构成幺半群时，这些条件显然成立。
 
-\section{T-algebras}
+\section{T-代数}
 
-Since mathematicians prefer to call their monads $T$, they call
-algebras compatible with them T-algebras. T-algebras for a given monad $T$
-in a category $\cat{C}$ form a category called the Eilenberg-Moore
-category, often denoted by $\cat{C}^T$. Morphisms in that
-category are homomorphisms of algebras. These are the same homomorphisms
-we've seen defined for F-algebras.
+由于数学家习惯将单子记为 $T$，他们称与其兼容的代数为 T-代数。给定范畴 $\cat{C}$ 中单子 $T$ 的 T-代数构成一个称为 Eilenberg-Moore 范畴的范畴，常记作 $\cat{C}^T$。该范畴中的态射是代数同态，即与之前 F-代数定义相同的同态。
 
-A T-algebra is a pair consisting of a carrier object and an evaluator,
-$(a, f)$. There is an obvious forgetful functor $U^T$ from
-$\cat{C}^T$ to $\cat{C}$, which maps $(a, f)$ to $a$. It
-also maps a homomorphism of T-algebras to a corresponding morphism
-between carrier objects in $\cat{C}$. You may remember from our discussion of
-adjunctions that the left adjoint to a forgetful functor is called a
-free functor.
+T-代数由载体对象和求值器组成的对 $(a, f)$ 构成。存在一个明显的遗忘函子 $U^T$ 从 $\cat{C}^T$ 到 $\cat{C}$，它将 $(a, f)$ 映射为 $a$。同时它也将 T-代数同态映射为范畴 $\cat{C}$ 中载体对象间的相应态射。你或许记得在讨论伴随关系时，遗忘函子的左伴随被称为自由函子。
 
-The left adjoint to $U^T$ is called $F^T$. It maps an object
-$a$ in $\cat{C}$ to a free algebra in $\cat{C}^T$. The carrier
-of this free algebra is $T a$. Its evaluator is a morphism from
-$T (T a)$ back to $T a$. Since $T$ is a monad,
-we can use the monadic $\mu_a$ (\code{join} in Haskell) as the
-evaluator.
+$U^T$ 的左伴随记为 $F^T$。它将范畴 $\cat{C}$ 中的对象 $a$ 映射为 $\cat{C}^T$ 中的自由代数。该自由代数的载体是 $T a$，其求值器是从 $T (T a)$ 到 $T a$ 的态射。由于 $T$ 是单子，我们可以用单子的 $\mu_a$（Haskell 中的 \code{join}）作为求值器。
 
-We still have to show that this is a T-algebra. For that, two coherence
-conditions must be satisfied:
+我们仍需验证这是 T-代数。为此需满足两个相容条件：
 \begin{align*}
   \mathit{alg} & \circ \eta_{Ta} = \id_{Ta}     \\
   \mathit{alg} & \circ \mu_a = \mathit{alg} \circ T\ \mathit{alg}
 \end{align*}
-But these are just monadic laws, if you plug in $\mu$ for the
-algebra.
+但若将代数替换为 $\mu$，这些正是单子定律。
 
-As you may recall, every adjunction defines a monad. It turns out that
-the adjunction between $F^T$ and $U^T$
-defines the very monad $T$ that was used in the construction of
-the Eilenberg-Moore category. Since we can perform this construction for
-every monad, we conclude that every monad can be generated from an
-adjunction. Later I'll show you that there is another adjunction that
-generates the same monad.
+如你回忆，每个伴随关系定义一个单子。事实证明，$F^T$ 与 $U^T$ 之间的伴随关系定义的正是用于构建 Eilenberg-Moore 范畴的那个单子 $T$。由于这种构造适用于每个单子，我们得出结论：每个单子都可以由某个伴随关系生成。稍后我将展示另一个生成相同单子的伴随关系。
 
-Here's the plan: First I'll show you that $F^T$ is indeed the left
-adjoint of $U^T$. I'll do it by defining the unit and the counit
-of this adjunction and proving that the corresponding triangular
-identities are satisfied. Then I'll show you that the monad generated by
-this adjunction is indeed our original monad.
+计划如下：首先我将证明 $F^T$ 确实是 $U^T$ 的左伴随，通过定义该伴随关系的单位和余单位并验证相应的三角恒等式。然后我将证明该伴随关系生成的单子确实是我们原来的单子。
 
-The unit of the adjunction is the natural transformation:
+该伴随关系的单位是自然变换：
 \[\eta \Colon I \to U^T \circ F^T\]
-Let's calculate the $a$ component of this transformation. The
-identity functor gives us $a$. The free functor produces the free
-algebra $(T a, \mu_a)$, and the forgetful functor reduces it to
-$T a$. Altogether we get a mapping from $a$ to
-$T a$. We'll simply use the unit of the monad $T$ as the
-unit of this adjunction.
+计算该变换在 $a$ 处的分量：恒等函子给出 $a$，自由函子产生自由代数 $(T a, \mu_a)$，遗忘函子将其简化为 $T a$。整体得到从 $a$ 到 $T a$ 的映射。我们将简单地使用单子 $T$ 的单位作为该伴随关系的单位。
 
-Let's look at the counit:
+观察余单位：
 \[\varepsilon \Colon F^T \circ U^T \to I\]
-Let's calculate its component at some T-algebra $(a, f)$. The
-forgetful functor forgets the $f$, and the free functor produces
-the pair $(T a, \mu_a)$. So in order to define the component of
-the counit $\varepsilon$ at $(a, f)$, we need the right morphism in
-the Eilenberg-Moore category, or a homomorphism of T-algebras:
+计算它在某个 T-代数 $(a, f)$ 处的分量。遗忘函子忘记 $f$，自由函子产生对 $(T a, \mu_a)$。因此为了定义余单位 $\varepsilon$ 在 $(a, f)$ 处的分量，我们需要 Eilenberg-Moore 范畴中的适当态射，即 T-代数同态：
 \[(T a, \mu_a) \to (a, f)\]
-Such a homomorphism should map the carrier $T a$ to $a$.
-Let's just resurrect the forgotten evaluator $f$. This time we'll
-use it as a homomorphism of T-algebras. Indeed, the same commuting
-diagram that makes $f$ a T-algebra may be re-interpreted to show
-that it's a homomorphism of T-algebras:
+这样的同态应将载体 $T a$ 映射到 $a$。让我们重新启用被遗忘的求值器 $f$。这次我们将它用作 T-代数同态。事实上，使 $f$ 成为 T-代数的交换图也可重新解释为显示它是 T-代数同态：
 
 \begin{figure}[H]
   \centering
@@ -184,12 +102,9 @@ that it's a homomorphism of T-algebras:
 \end{figure}
 
 \noindent
-We have thus defined the component of the counit natural transformation
-$\varepsilon$ at $(a, f)$ (an object in the category of T-algebras)
-to be $f$.
+因此我们定义余单位自然变换 $\varepsilon$ 在 $(a, f)$（T-代数范畴中的对象）处的分量为 $f$。
 
-To complete the adjunction we also need to show that the unit and the
-counit satisfy triangular identities. These are:
+要完成伴随关系还需验证单位和余单位满足三角恒等式：
 
 \begin{figure}[H]
   \centering
@@ -213,116 +128,77 @@ counit satisfy triangular identities. These are:
 \end{figure}
 
 \noindent
-The first one holds because of the unit law for the monad $T$.
-The second is just the law of the T-algebra $(a, f)$.
+第一个恒等式因单子 $T$ 的单位律成立。第二个是 T-代数 $(a, f)$ 的基本性质。
 
-We have established that the two functors form an adjunction:
+我们已建立两个函子构成伴随关系：
 \[F^T \dashv U^T\]
-Every adjunction gives rise to a monad. The round trip
+每个伴随关系产生一个单子。往返函子
 \[U^T \circ F^T\]
-is the endofunctor in $\cat{C}$ that gives rise to the corresponding monad.
-Let's see what its action on an object $a$ is. The free algebra
-created by $F^T$ is $(T a, \mu_a)$. The forgetful functor
-$U^T$ drops the evaluator. So, indeed, we have:
+是范畴 $\cat{C}$ 中生成相应单子的自函子。观察它在对象 $a$ 上的作用：$F^T$ 创建的自由代数是 $(T a, \mu_a)$，遗忘函子 $U^T$ 丢弃求值器。因此确实有：
 \[U^T \circ F^T = T\]
-As expected, the unit of the adjunction is the unit of the monad $T$.
+如预期，伴随关系的单位就是单子 $T$ 的单位。
 
-You may remember that the counit of the adjunction produces monadic
-multiplication through the following formula:
+你或许记得伴随关系的余单位通过下述公式产生单子乘法：
 \[\mu = R \circ \varepsilon \circ L\]
-This is a horizontal composition of three natural transformations, two
-of them being identity natural transformations mapping, respectively,
-$L$ to $L$ and $R$ to $R$. The one in the
-middle, the counit, is a natural transformation whose component at an
-algebra $(a, f)$ is $f$.
+这是三个自然变换的水平合成，其中两个是分别将 $L$ 映射到 $L$ 和 $R$ 映射到 $R$ 的恒等自然变换。中间的余单位是一个在代数 $(a, f)$ 处分量为 $f$ 的自然变换。
 
-Let's calculate the component $\mu_a$. We first horizontally compose
-$\varepsilon$ after $F^T$, which results in the component of
-$\varepsilon$ at $F^T a$. Since $F^T$ takes $a$ to the
-algebra $(T a, \mu_a)$, and $\varepsilon$ picks the evaluator, we end
-up with $\mu_a$. Horizontal composition on the left with $U^T$
-doesn't change anything, since the action of $U^T$ on morphisms is
-trivial. So, indeed, the $\mu$ obtained from the adjunction is the
-same as the $\mu$ of the original monad $T$.
+计算分量 $\mu_a$：先将 $\varepsilon$ 与 $F^T$ 水平合成，得到 $F^T a$ 处的分量。由于 $F^T$ 将 $a$ 映射为代数 $(T a, \mu_a)$，而 $\varepsilon$ 选取求值器，最终得到 $\mu_a$。左侧与 $U^T$ 的水平合成不改变结果，因为 $U^T$ 在态射上的作用是平凡的。因此，从伴随关系得到的 $\mu$ 与原单子 $T$ 的 $\mu$ 完全一致。
 
-\section{The Kleisli Category}
+\section{Kleisli范畴}
 
-We've seen the Kleisli category before. It's a category constructed from
-another category $\cat{C}$ and a monad $T$. We'll call this
-category $\cat{C}_T$. The objects in the Kleisli category
-$\cat{C}_T$ are the objects of $\cat{C}$, but the morphisms
-are different. A morphism $f_{\cat{K}}$ from $a$ to $b$ in
-the Kleisli category corresponds to a morphism $f$ from
-$a$ to $T b$ in the original category. We call this
-morphism a Kleisli arrow from $a$ to $b$.
+我们之前已经见过Kleisli范畴。它是从另一个范畴 $\cat{C}$ 和一个单子(monad) $T$ 构造而来的范畴。我们将这个范畴记作 $\cat{C}_T$。Kleisli范畴 $\cat{C}_T$ 中的对象就是 $\cat{C}$ 的对象，但态射(morphism)有所不同。在Kleisli范畴中从 $a$ 到 $b$ 的态射 $f_{\cat{K}}$ 对应于原范畴中从 $a$ 到 $T b$ 的态射 $f$。我们将这种态射称为从 $a$ 到 $b$ 的Kleisli箭头(Kleisli arrow)。
 
-Composition of morphisms in the Kleisli category is defined in terms of
-monadic composition of Kleisli arrows. For instance, let's compose
-$g_{\cat{K}}$ after $f_{\cat{K}}$. In the Kleisli category we have:
+Kleisli范畴中态射的复合是通过Kleisli箭头的单子复合来定义的。例如，令 $g_{\cat{K}}$ 接续 $f_{\cat{K}}$ 进行复合。在Kleisli范畴中有：
 \begin{gather*}
   f_{\cat{K}} \Colon a \to b \\
   g_{\cat{K}} \Colon b \to c
 \end{gather*}
-which, in the category $\cat{C}$, corresponds to:
+这在范畴 $\cat{C}$ 中对应于：
 \begin{gather*}
   f \Colon a \to T b \\
   g \Colon b \to T c
 \end{gather*}
-We define the composition:
-\[h_{\cat{K}} = g_{\cat{K}} \circ f_{\cat{K}}\]
-as a Kleisli arrow in $\cat{C}$
+我们定义复合：
+$$h_{\cat{K}} = g_{\cat{K}} \circ f_{\cat{K}}$$
+作为 $\cat{C}$ 中的Kleisli箭头：
 \begin{align*}
   h & \Colon a \to T c          \\
   h & = \mu \circ (T g) \circ f
 \end{align*}
-In Haskell we would write it as:
+在Haskell中我们会这样编写：
 
 \src{snippet05}
-There is a functor $F$ from $\cat{C}$ to $\cat{C}_T$
-which acts trivially on objects. On morphisms, it maps $f$ in
-$\cat{C}$ to a morphism in $\cat{C}_T$ by creating a
-Kleisli arrow that embellishes the return value of $f$. Given a
-morphism:
-\[f \Colon a \to b\]
-it creates a morphism in $\cat{C}_T$ with the
-corresponding Kleisli arrow:
-\[\eta \circ f\]
-In Haskell we'd write it as:
+
+存在一个从 $\cat{C}$ 到 $\cat{C}_T$ 的函子 $F$，它在对象上平凡地作用。对于态射，它将 $\cat{C}$ 中的态射 $f$ 映射为 $\cat{C}_T$ 中通过修饰 $f$ 的返回值生成的Kleisli箭头。给定态射：
+$$f \Colon a \to b$$
+它会在 $\cat{C}_T$ 中创建对应的Kleisli箭头：
+$$\eta \circ f$$
+在Haskell中我们会这样编写：
 
 \src{snippet06}
-We can also define a functor $G$ from $\cat{C}_T$
-back to $\cat{C}$. It takes an object $a$ from the Kleisli
-category and maps it to an object $T a$ in $\cat{C}$. Its action
-on a morphism $f_{\cat{K}}$ corresponding to a Kleisli arrow:
-\[f \Colon a \to T b\]
-is a morphism in $\cat{C}$:
-\[T a \to T b\]
-given by first lifting $f$ and then applying $\mu$:
-\[\mu_{T b} \circ T f\]
-In Haskell notation this would read:
+
+我们也可以定义一个从 $\cat{C}_T$ 回到 $\cat{C}$ 的函子 $G$。它将Kleisli范畴中的对象 $a$ 映射为 $\cat{C}$ 中的对象 $T a$。对于对应Kleisli箭头：
+$$f \Colon a \to T b$$
+的态射 $f_{\cat{K}}$，其作用是在 $\cat{C}$ 中给出态射：
+$$T a \to T b$$
+具体方法是对 $f$ 进行提升后再应用 $\mu$：
+$$\mu_{T b} \circ T f$$
+用Haskell表示法写作：
 
 \begin{snipv}
 G f\textsubscript{T} = join . fmap f
 \end{snipv}
-You may recognize this as the definition of monadic bind in terms of
-\code{join}.
+您可能已认出这是使用 \code{join} 定义单子绑定(bind)的标准形式。
 
-It's easy to see that the two functors form an adjunction:
-\[F \dashv G\]
-and their composition $G \circ F$ reproduces the original monad $T$.
+容易看出这两个函子构成了一个伴随(adjunction)：
+$$F \dashv G$$
+它们的合成 $G \circ F$ 则重现了原始单子 $T$。
 
-So this is the second adjunction that produces the same monad. In fact
-there is a whole category of adjunctions $\cat{Adj}(\cat{C}, T)$ that result
-in the same monad $T$ on $\cat{C}$. The Kleisli adjunction we've
-just seen is the initial object in this category, and the
-Eilenberg-Moore adjunction is the terminal object.
+这是我们见到的第二个产生相同单子的伴随对。事实上，所有导致 $\cat{C}$ 上相同单子 $T$ 的伴随构成的范畴 $\cat{Adj}(\cat{C}, T)$ 中，Kleisli伴随是该范畴中的始对象(initial object)，而Eilenberg-Moore伴随则是终对象(terminal object)。
 
-\section{Coalgebras for Comonads}
+\section{余单子的余代数}
 
-Analogous constructions can be done for any
-\hyperref[comonads]{comonad}
-$W$. We can define a category of coalgebras that are compatible
-with a comonad. They make the following diagrams commute:
+对于任意\hyperref[comonads]{余单子}$W$都可以进行类似的构造。我们可以定义与余单子相容的余代数范畴。这些余代数满足以下交换图：
 
 \begin{figure}[H]
   \centering
@@ -347,100 +223,77 @@ with a comonad. They make the following diagrams commute:
 \end{figure}
 
 \noindent
-where $\mathit{coa}$ is the coevaluation morphism of the coalgebra whose
-carrier is $a$:
-\[\mathit{coa} \Colon a \to W a\]
-and $\varepsilon$ and $\delta$ are the two natural transformations
-defining the comonad (in Haskell, their components are called
-\code{extract} and \code{duplicate}).
+其中$\mathit{coa}$是载体为$a$的余代数的余评估态射：
+$$\mathit{coa} \Colon a \to W a$$
+而$\varepsilon$和$\delta$是定义余单子的两个自然变换（在Haskell中其分量被称为\code{extract}和\code{duplicate}）。
 
-There is an obvious forgetful functor $U^W$ from the category of
-these coalgebras to $\cat{C}$. It just forgets the coevaluation. We'll
-consider its right adjoint $F^W$.
-\[U^W \dashv F^W\]
-The right adjoint to a forgetful functor is called a cofree functor.
-$F^W$ generates cofree coalgebras. It assigns, to an object
-$a$ in $\cat{C}$, the coalgebra $(W a, \delta_a)$. The
-adjunction reproduces the original comonad as the composite
-$U^W \circ F^W$.
+从这类余代数范畴到$\cat{C}$存在一个明显的遗忘函子$U^W$，它遗忘余评估结构。我们将考虑其右伴随函子$F^W$。
+$$U^W \dashv F^W$$
+遗忘函子的右伴随称为余自由函子。$F^W$生成余自由余代数，它将$\cat{C}$中的对象$a$映射到余代数$(W a, \delta_a)$。该伴随对复合产生的函子$U^W \circ F^W$恰好是原始的余单子。
 
-Similarly, we can construct a co-Kleisli category with co-Kleisli arrows
-and regenerate the comonad from the corresponding adjunction.
+类似地，我们可以构造余Kleisli范畴（co-Kleisli category），通过余Kleisli箭头（co-Kleisli arrows）从对应的伴随关系重新生成余单子结构。
 
-\section{Lenses}
+\section{透镜}
 
-Let's go back to our discussion of lenses. A lens can be written as a
-coalgebra:
-\[\mathit{coalg}_s \Colon a \to \mathit{Store}\ s\ a\]
-for the functor $\mathit{Store}\ s$:
+让我们回到对透镜的讨论。透镜可以表示为如下余代数：
+$$\mathit{coalg}_s \Colon a \to \mathit{Store}\ s\ a$$
+对应函子 $\mathit{Store}\ s$:
 
 \src{snippet07}
-This coalgebra can be also expressed as a pair of functions:
+该余代数也可表示为一对函数：
 \begin{align*}
   \mathit{set} & \Colon a \to s \to a \\
   \mathit{get} & \Colon a \to s
 \end{align*}
-(Think of $a$ as standing for ``all,'' and $s$ as a
-``small'' part of it.) In terms of this pair, we have:
-\[\mathit{coalg}_s\ a = \mathit{Store}\ (\mathit{set}\ a)\ (\mathit{get}\ a)\]
-Here, $a$ is a value of type $a$. Notice that partially
-applied \code{set} is a function $s \to a$.
+（可将 $a$ 理解为"整体"，$s$ 理解为其"局部"）。用这对函数表示为：
+$$\mathit{coalg}_s\ a = \mathit{Store}\ (\mathit{set}\ a)\ (\mathit{get}\ a)$$
+其中 $a$ 是类型为 $a$ 的值。注意部分应用的 \code{set} 是函数 $s \to a$。
 
-We also know that $\mathit{Store}\ s$ is a comonad:
+我们还知道 $\mathit{Store}\ s$ 是一个余单子：
 
 \src{snippet08}
-The question is: Under what conditions is a lens a coalgebra for this
-comonad? The first coherence condition:
-\[\varepsilon_a \circ \mathit{coalg} = \idarrow[a]\]
-translates to:
-\[\mathit{set}\ a\ (\mathit{get}\ a) = a\]
-This is the lens law that expresses the fact that if you set a field of
-the structure $a$ to its previous value, nothing changes.
+问题是：在什么条件下透镜是该余单子的余代数？第一个一致性条件：
+$$\varepsilon_a \circ \mathit{coalg} = \idarrow[a]$$
+转化为：
+$$\mathit{set}\ a\ (\mathit{get}\ a) = a$$
+这就是透镜定律之一，表明若将结构 $a$ 的字段设为其当前值，则结构保持不变。
 
-The second condition:
-\[\mathit{fmap}\ \mathit{coalg} \circ \mathit{coalg} = \delta_a \circ \mathit{coalg}\]
-requires a little more work. First, recall the definition of
-\code{fmap} for the \code{Store} functor:
+第二个条件：
+$$\mathit{fmap}\ \mathit{coalg} \circ \mathit{coalg} = \delta_a \circ \mathit{coalg}$$
+需要更多推导。首先回顾 \code{Store} 函子的 \code{fmap} 定义：
 
 \src{snippet09}
-Applying \code{fmap coalg} to the result of \code{coalg} gives us:
+对 \code{coalg} 的结果应用 \code{fmap coalg} 得到：
 
 \src{snippet10}
-On the other hand, applying \code{duplicate} to the result of
-\code{coalg} produces:
+另一方面，对 \code{coalg} 的结果应用 \code{duplicate} 得到：
 
 \src{snippet11}
-For these two expressions to be equal, the two functions under
-\code{Store} must be equal when acting on an arbitrary \code{s}:
+要使这两个表达式相等，当作用于任意 \code{s} 时，\code{Store} 下的两个函数必须相等：
 
 \src{snippet12}
-Expanding \code{coalg}, we get:
+展开 \code{coalg} 后得到：
 
 \src{snippet13}
-This is equivalent to two remaining lens laws. The first one:
+这对应剩余的两个透镜定律。第一个：
 
 \src{snippet14}
-tells us that setting the value of a field twice is the same as setting
-it once. The second law:
+表明连续两次设置字段值等同于仅设置一次。第二个定律：
 
 \src{snippet15}
-tells us that getting a value of a field that was set to $s$
-gives $s$ back.
+表明获取被设置为 $s$ 的字段值会返回 $s$。
 
-In other words, a well-behaved lens is indeed a comonad coalgebra for
-the \code{Store} functor.
+换句话说，行为良好的透镜确实是 \code{Store} 函子的余单子余代数。
 
-\section{Challenges}
+\section{挑战}
 
 \begin{enumerate}
   \tightlist
   \item
-        What is the action of the free functor
-        $F \Colon C \to C^T$ on morphisms. Hint: use the
-        naturality condition for monadic $\mu$.
+        自由函子 $F \Colon C \to C^T$ 在态射上的作用是什么？提示：利用单子乘法(monadic $\mu$)的自然性条件(naturality condition)。
   \item
-        Define the adjunction:
+        定义伴随对(adjunction)：
         \[U^W \dashv F^W\]
   \item
-        Prove that the above adjunction reproduces the original comonad.
+        证明上述伴随对重现原始的余单子(comonad)。
 \end{enumerate}
