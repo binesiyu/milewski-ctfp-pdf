@@ -23,13 +23,23 @@
 \defaultfontfeatures{%                                         %  is important for
   Scale=MatchLowercase, % needed here ...                      %  single quotes not
 }                                                              %  to turn out curly
-\setmonofont[BoldFont=Inconsolata-LGC-Bold.ttf]{Inconsolata-LGC-Bold.ttf} %  ("typographic")
+% \setmonofont[BoldFont=Inconsolata-LGC-Bold.ttf]{Inconsolata-LGC-Bold.ttf} %  ("typographic")
                                                                %  in verbatim blocks
 \defaultfontfeatures{%                                         %  of Haskell code.
   Scale=MatchLowercase, % ... and here again                   %  Now the quote is
   Mapping=tex-text,                                            %  upright and safely
   SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},          %  copy-pasteable to
 }                                                              %  the REPL without
+
+\usepackage[scheme=plain]{ctex} % ✅ 需要加载 ctex
+% \setCJKlinespacing{2} % 行距倍数，例如 2 倍
+% \usepackage{xeCJK}
+
+% \usepackage{unicode-math} % 专管数学字体
+% \setmainfont{Times New Roman}
+% \setCJKlinespacing{1.8} % 设置中文行距为字体的 1.8 倍
+\linespread{1.25}         % 设置整个文档的行距（中英文）
+\setmathfont{STIX Two Math} % 避免用中文字体做数学
 %--------------------------------------------------------------%  giving errors.
 
 % To use Libertine letters and numbers,
@@ -43,7 +53,7 @@
 \expandafter\let\csname not<\endcsname\relax
 \expandafter\let\csname not>\endcsname\relax
 \usepackage{unicode-math}
-\setmathfont{LibertinusMath-Regular.otf}
+% \setmathfont{LibertinusMath-Regular.otf}
 
 \usepackage[all]{nowidow}
 \usepackage{emptypage}

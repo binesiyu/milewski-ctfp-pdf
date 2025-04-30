@@ -1,6 +1,6 @@
 OUTPUT ?= $(shell basename "$(shell dirname "$(INPUT)")")
 OUTPUT_DIRECTORY = $(shell pwd)/build
-LATEXMK_ARGS ?= -f -file-line-error -shell-escape -logfilewarninglist -interaction=nonstopmode -halt-on-error -norc -pdflatex="xelatex %O %S" -pdfxe
+LATEXMK_ARGS ?= -f -file-line-error -shell-escape -logfilewarninglist -interaction=nonstopmode -norc -pdflatex="xelatex %O %S" -pdfxe
 TEXINPUTS = ""
 TEXLIVE_RUN = TEXINPUTS=$(TEXINPUTS)
 LATEXMK_COMMAND = $(TEXLIVE_RUN) latexmk $(LATEXMK_ARGS)
