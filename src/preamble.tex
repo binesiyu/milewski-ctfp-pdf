@@ -1,17 +1,19 @@
-\documentclass[\OPTmodes]{book}
+\documentclass[\OPTmodes]{ctexbook}
 
 \usepackage[papersize={\OPTpaperesize},
             top=\OPTtopmargin,
             bottom=\OPTbottommargin,
-            inner=\OPTinnermargin,
-            outer=\OPToutermargin,
+            % inner=\OPTinnermargin,
+            % outer=\OPToutermargin,
+            inner=1.0cm,
+            outer=1.0cm,
             bindingoffset=\OPTbindingoffset,
             centering,
             % showframe,
             ]{geometry}
 
 % New line height: 1.05 * 1.2 = 1.26
-\renewcommand{\baselinestretch}{1.05}
+% \renewcommand{\baselinestretch}{1.05}
 
 % Uncomment for diagnostics!
 % \usepackage[cam,width=6in,height=9in]{crop}
@@ -31,15 +33,15 @@
   SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},          %  copy-pasteable to
 }                                                              %  the REPL without
 
-\usepackage[scheme=plain]{ctex} % ✅ 需要加载 ctex
+% \usepackage[scheme=plain]{ctex} % ✅ 需要加载 ctex
 % \setCJKlinespacing{2} % 行距倍数，例如 2 倍
 % \usepackage{xeCJK}
 
 % \usepackage{unicode-math} % 专管数学字体
 % \setmainfont{Times New Roman}
 % \setCJKlinespacing{1.8} % 设置中文行距为字体的 1.8 倍
-\linespread{1.25}         % 设置整个文档的行距（中英文）
-\setmathfont{STIX Two Math} % 避免用中文字体做数学
+% \linespread{1.25}         % 设置整个文档的行距（中英文）
+% \setmathfont{STIX Two Math} % 避免用中文字体做数学
 %--------------------------------------------------------------%  giving errors.
 
 % To use Libertine letters and numbers,
